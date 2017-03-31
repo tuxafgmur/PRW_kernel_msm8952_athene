@@ -33,9 +33,6 @@
 #include <linux/kernel_stat.h>
 #include <asm/cputime.h>
 
-#define CREATE_TRACE_POINTS
-#include <trace/events/cpufreq_interactive.h>
-
 struct cpufreq_interactive_policyinfo {
 	struct timer_list policy_timer;
 	struct timer_list policy_slack_timer;
@@ -99,8 +96,8 @@ struct cpufreq_interactive_tunables {
 	unsigned int *target_loads;
 	int ntarget_loads;
 	/*
-	 * The minimum amount of time to spend at a frequency before we can ramp
-	 * down.
+	 * The minimum amount of time to spend at a frequency
+	 * before we can ramp down.
 	 */
 #define DEFAULT_MIN_SAMPLE_TIME (80 * USEC_PER_MSEC)
 	unsigned long min_sample_time;
@@ -109,8 +106,8 @@ struct cpufreq_interactive_tunables {
 	 */
 	unsigned long timer_rate;
 	/*
-	 * Wait this long before raising speed above hispeed, by default a
-	 * single timer interval.
+	 * Wait this long before raising speed above hispeed,
+	 * by default asingle timer interval.
 	 */
 	spinlock_t above_hispeed_delay_lock;
 	unsigned int *above_hispeed_delay;
@@ -135,8 +132,8 @@ struct cpufreq_interactive_tunables {
 	bool align_windows;
 
 	/*
-	 * Stay at max freq for at least max_freq_hysteresis before dropping
-	 * frequency.
+	 * Stay at max freq for at least max_freq_hysteresis
+	 * before dropping frequency.
 	 */
 	unsigned int max_freq_hysteresis;
 
@@ -454,9 +451,6 @@ static void __cpufreq_interactive_timer(unsigned long data, bool is_notif)
 		}
 		tmploadadjfreq = (unsigned int)cputime_speedadj * 100;
 		pcpu->loadadjfreq = tmploadadjfreq;
-		trace_cpufreq_interactive_cpuload(i, tmploadadjfreq /
-						  ppol->target_freq);
-
 		if (tmploadadjfreq > loadadjfreq) {
 			loadadjfreq = tmploadadjfreq;
 			max_cpu = i;
@@ -523,9 +517,6 @@ static void __cpufreq_interactive_timer(unsigned long data, bool is_notif)
 		new_freq > ppol->target_freq &&
 		now - ppol->hispeed_validate_time <
 		freq_to_above_hispeed_delay(tunables, ppol->target_freq)) {
-		trace_cpufreq_interactive_notyet(
-			max_cpu, cpu_load, ppol->target_freq,
-			ppol->policy->cur, new_freq);
 		spin_unlock_irqrestore(&ppol->target_freq_lock, flags);
 		goto rearm;
 	}
@@ -548,9 +539,6 @@ static void __cpufreq_interactive_timer(unsigned long data, bool is_notif)
 	if (!skip_min_sample_time && new_freq < ppol->floor_freq) {
 		if (now - ppol->floor_validate_time <
 			tunables->min_sample_time) {
-			trace_cpufreq_interactive_notyet(
-				max_cpu, cpu_load, ppol->target_freq,
-				ppol->policy->cur, new_freq);
 			spin_unlock_irqrestore(&ppol->target_freq_lock, flags);
 			goto rearm;
 		}
@@ -576,15 +564,9 @@ static void __cpufreq_interactive_timer(unsigned long data, bool is_notif)
 		ppol->max_freq_hyst_start_time = now;
 
 	if (ppol->target_freq == new_freq) {
-		trace_cpufreq_interactive_already(
-			max_cpu, cpu_load, ppol->target_freq,
-			ppol->policy->cur, new_freq);
 		spin_unlock_irqrestore(&ppol->target_freq_lock, flags);
 		goto rearm;
 	}
-
-	trace_cpufreq_interactive_target(max_cpu, cpu_load, ppol->target_freq,
-					 ppol->policy->cur, new_freq);
 
 	ppol->target_freq = new_freq;
 	spin_unlock_irqrestore(&ppol->target_freq_lock, flags);
@@ -647,9 +629,6 @@ static int cpufreq_interactive_speedchange_task(void *data)
 				__cpufreq_driver_target(ppol->policy,
 							ppol->target_freq,
 							CPUFREQ_RELATION_H);
-			trace_cpufreq_interactive_setspeed(cpu,
-						     ppol->target_freq,
-						     ppol->policy->cur);
 			up_read(&ppol->enable_sem);
 		}
 	}
@@ -681,7 +660,6 @@ static int load_change_callback(struct notifier_block *nb, unsigned long val,
 		return 0;
 	}
 
-	trace_cpufreq_interactive_load_change(cpu);
 	del_timer(&ppol->policy_timer);
 	del_timer(&ppol->policy_slack_timer);
 	__cpufreq_interactive_timer(cpu, true);
@@ -966,9 +944,6 @@ static ssize_t store_timer_rate(struct cpufreq_interactive_tunables *tunables,
 		return ret;
 
 	val_round = jiffies_to_usecs(usecs_to_jiffies(val));
-	if (val != val_round)
-		pr_warn("timer_rate not aligned to jiffy. Rounded up to %lu\n",
-			val_round);
 	tunables->timer_rate = val_round;
 
 	if (!tunables->use_sched_load)
