@@ -2248,7 +2248,7 @@ int stmvl53l0_checkmoduleid(struct stmvl53l0_data *data,
 
 		err = i2c_transfer(i2c_pclient->adapter, msg, 1);
 		if (err != 1) {
-			pr_err("%s: i2c_transfer err:%d, addr:0x%x, reg:0x%x\n",
+			pr_debug("%s: i2c_transfer err:%d, addr:0x%x, reg:0x%x\n",
 				__func__, err, i2c_pclient->addr, buff);
 			err = -1;
 			return err;
@@ -2261,7 +2261,7 @@ int stmvl53l0_checkmoduleid(struct stmvl53l0_data *data,
 
 		err = i2c_transfer(i2c_pclient->adapter, &msg[0], 1);
 		if (err != 1) {
-			pr_err("%s: Read i2c_transfer err:%d, addr:0x%x\n",
+			pr_debug("%s: Read i2c_transfer err:%d, addr:0x%x\n",
 				__func__, err, i2c_pclient->addr);
 			err = -1;
 			return err;

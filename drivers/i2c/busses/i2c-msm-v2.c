@@ -105,7 +105,7 @@ static void i2c_msm_dbg_dump_diag(struct i2c_msm_ctrl *ctrl,
 
 		str = buf;
 	}
-
+#if 0
 	/* dump xfer details */
 	dev_err(ctrl->dev,
 		"%s: msgs(n:%d cur:%d %s) bc(rx:%zu tx:%zu) mode:%s slv_addr:0x%0x MSTR_STS:0x%08x OPER:0x%08x\n",
@@ -113,6 +113,7 @@ static void i2c_msm_dbg_dump_diag(struct i2c_msm_ctrl *ctrl,
 		xfer->cur_buf.is_rx ? "rx" : "tx", xfer->rx_cnt, xfer->tx_cnt,
 		i2c_msm_mode_str_tbl[xfer->mode_id], xfer->msgs->addr,
 		status, qup_op);
+#endif
 }
 
 static u32 i2c_msm_reg_io_modes_out_blk_sz(u32 qup_io_modes)

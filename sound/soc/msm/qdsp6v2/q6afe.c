@@ -2627,7 +2627,7 @@ int afe_pseudo_port_start_nowait(u16 port_id)
 
 	pr_debug("%s: port_id=0x%x\n", __func__, port_id);
 	if (this_afe.apr == NULL) {
-		pr_err("%s: AFE APR is not registered\n", __func__);
+		pr_debug("%s: AFE APR is not registered\n", __func__);
 		return -ENODEV;
 	}
 

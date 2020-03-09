@@ -6239,7 +6239,7 @@ skip_f12_single_i2c_setup:
 	if (!rmi4_data->in_bootloader && !rmi4_data->input_registered) {
 		retval = input_register_device(rmi4_data->input_dev);
 		if (retval < 0) {
-			dev_err(&rmi4_data->i2c_client->dev,
+			dev_dbg(&rmi4_data->i2c_client->dev,
 				"%s: Failed to register input device\n",
 				__func__);
 			return retval;
@@ -6542,7 +6542,7 @@ static void synaptics_rmi4_detection_work(struct work_struct *work)
 					exp_fn_ctrl.det_workqueue,
 					&exp_fn_ctrl.det_work,
 					msecs_to_jiffies(EXP_FN_DET_INTERVAL));
-			pr_err("Failed to register fps_notifier retry %d\n",
+			pr_debug("Failed to register fps_notifier retry %d\n",
 				fps_registered_retry);
 		} else {
 			rmi4_data->is_fps_registered = true;
@@ -7299,7 +7299,7 @@ static int synaptics_rmi4_probe(struct i2c_client *client,
 				queue_delayed_work(exp_fn_ctrl.det_workqueue,
 					&exp_fn_ctrl.det_work,
 					msecs_to_jiffies(EXP_FN_DET_INTERVAL));
-			dev_err(&client->dev,
+			dev_dbg(&client->dev,
 				"Failed to register fps_notifier: %d\n",
 				retval);
 			retval = 0;

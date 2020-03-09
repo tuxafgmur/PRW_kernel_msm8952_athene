@@ -133,7 +133,7 @@ static void msm_pcm_routing_cfg_pp(int port_id, int copp_idx, int topology,
 		rc = msm_ds2_dap_init(port_id, copp_idx, channels,
 				      is_custom_stereo_on);
 		if (rc < 0)
-			pr_err("%s: DS2 topo_id 0x%x, port %d, CS %d rc %d\n",
+			pr_debug("%s: DS2 topo_id 0x%x, port %d, CS %d rc %d\n",
 				__func__, topology, port_id,
 				is_custom_stereo_on, rc);
 		break;
@@ -143,14 +143,14 @@ static void msm_pcm_routing_cfg_pp(int port_id, int copp_idx, int topology,
 			rc = msm_ds2_dap_init(port_id, copp_idx, channels,
 				is_custom_stereo_on);
 			if (rc < 0)
-				pr_err("%s:DS2 topo_id 0x%x, port %d, rc %d\n",
+				pr_debug("%s:DS2 topo_id 0x%x, port %d, rc %d\n",
 					__func__, topology, port_id, rc);
 		} else {
 			pr_debug("%s: DOLBY_ADM_COPP_TOPOLOGY_ID\n", __func__);
 			rc = msm_dolby_dap_init(port_id, copp_idx, channels,
 						is_custom_stereo_on);
 			if (rc < 0)
-				pr_err("%s: DS1 topo_id 0x%x, port %d, rc %d\n",
+				pr_debug("%s: DS1 topo_id 0x%x, port %d, rc %d\n",
 					__func__, topology, port_id, rc);
 		}
 		break;
@@ -394,7 +394,7 @@ void msm_pcm_routing_reg_stream_app_type_cfg(int fedai_id, int app_type,
 		__func__, fedai_id, app_type, sample_rate);
 	if (fedai_id > MSM_FRONTEND_DAI_MM_MAX_ID) {
 		/* bad ID assigned in machine driver */
-		pr_err("%s: bad MM ID %d\n", __func__, fedai_id);
+		pr_debug("%s: bad MM ID %d\n", __func__, fedai_id);
 		return;
 	}
 	fe_dai_app_type_cfg[fedai_id].app_type = app_type;
@@ -543,7 +543,7 @@ void msm_pcm_routing_reg_psthr_stream(int fedai_id, int dspst_id,
 
 	if (fedai_id > MSM_FRONTEND_DAI_MM_MAX_ID) {
 		/* bad ID assigned in machine driver */
-		pr_err("%s: bad MM ID\n", __func__);
+		pr_debug("%s: bad MM ID\n", __func__);
 		return;
 	}
 
@@ -589,7 +589,7 @@ int msm_pcm_routing_reg_phy_compr_stream(int fe_id, int perf_mode,
 
 	if (fe_id > MSM_FRONTEND_DAI_MM_MAX_ID) {
 		/* bad ID assigned in machine driver */
-		pr_err("%s: bad MM ID %d\n", __func__, fe_id);
+		pr_debug("%s: bad MM ID %d\n", __func__, fe_id);
 		return -EINVAL;
 	}
 
@@ -605,7 +605,7 @@ int msm_pcm_routing_reg_phy_compr_stream(int fe_id, int perf_mode,
 		path_type = ADM_PATH_LIVE_REC;
 		port_type = MSM_AFE_PORT_TYPE_TX;
 	} else {
-		pr_err("%s: invalid stream type %d\n", __func__, stream_type);
+		pr_debug("%s: invalid stream type %d\n", __func__, stream_type);
 		return -EINVAL;
 	}
 
@@ -644,7 +644,7 @@ int msm_pcm_routing_reg_phy_compr_stream(int fe_id, int perf_mode,
 			acdb_dev_id = fe_dai_app_type_cfg[fe_id].acdb_dev_id;
 			topology = msm_routing_get_adm_topology(path_type,
 								fe_id);
-			pr_err("%s: Before adm open topology %d\n", __func__,
+			pr_debug("%s: Before adm open topology %d\n", __func__,
 				topology);
 
 			copp_idx =
@@ -654,7 +654,7 @@ int msm_pcm_routing_reg_phy_compr_stream(int fe_id, int perf_mode,
 					 app_type, acdb_dev_id);
 			if ((copp_idx < 0) ||
 				(copp_idx >= MAX_COPPS_PER_PORT)) {
-				pr_err("%s:adm open failed coppid:%d\n",
+				pr_debug("%s:adm open failed coppid:%d\n",
 				__func__, copp_idx);
 				mutex_unlock(&routing_lock);
 				return -EINVAL;
@@ -736,7 +736,7 @@ int msm_pcm_routing_reg_phy_stream(int fedai_id, int perf_mode,
 
 	if (fedai_id > MSM_FRONTEND_DAI_MM_MAX_ID) {
 		/* bad ID assigned in machine driver */
-		pr_err("%s: bad MM ID %d\n", __func__, fedai_id);
+		pr_debug("%s: bad MM ID %d\n", __func__, fedai_id);
 		return -EINVAL;
 	}
 
@@ -790,7 +790,7 @@ int msm_pcm_routing_reg_phy_stream(int fedai_id, int perf_mode,
 					    app_type, acdb_dev_id);
 			if ((copp_idx < 0) ||
 				(copp_idx >= MAX_COPPS_PER_PORT)) {
-				pr_err("%s: adm open failed copp_idx:%d\n",
+				pr_debug("%s: adm open failed copp_idx:%d\n",
 					__func__, copp_idx);
 				mutex_unlock(&routing_lock);
 				return -EINVAL;
@@ -855,7 +855,7 @@ void msm_pcm_routing_dereg_phy_stream(int fedai_id, int stream_type)
 
 	if (fedai_id > MSM_FRONTEND_DAI_MM_MAX_ID) {
 		/* bad ID assigned in machine driver */
-		pr_err("%s: bad MM ID\n", __func__);
+		pr_debug("%s: bad MM ID\n", __func__);
 		return;
 	}
 
@@ -918,7 +918,7 @@ static bool msm_pcm_routing_route_is_set(u16 be_id, u16 fe_id)
 
 	if (fe_id > MSM_FRONTEND_DAI_MM_MAX_ID) {
 		/* recheck FE ID in the mixer control defined in this file */
-		pr_err("%s: bad MM ID\n", __func__);
+		pr_debug("%s: bad MM ID\n", __func__);
 		return rc;
 	}
 
@@ -939,7 +939,7 @@ static void msm_pcm_routing_process_audio(u16 reg, u16 val, int set)
 
 	if (val > MSM_FRONTEND_DAI_MM_MAX_ID) {
 		/* recheck FE ID in the mixer control defined in this file */
-		pr_err("%s: bad MM ID\n", __func__);
+		pr_debug("%s: bad MM ID\n", __func__);
 		return;
 	}
 
@@ -1347,7 +1347,7 @@ static int msm_routing_lsm_mux_put(struct snd_kcontrol *kcontrol,
 		lsm_port = AFE_PORT_ID_TERTIARY_MI2S_TX;
 		break;
 	default:
-		pr_err("Default lsm port");
+		pr_debug("Default lsm port");
 		break;
 	}
 	set_lsm_port(lsm_port);
@@ -1615,7 +1615,7 @@ static int msm_routing_ec_ref_rx_put(struct snd_kcontrol *kcontrol,
 		break;
 	default:
 		msm_route_ec_ref_rx = 0; /* NONE */
-		pr_err("%s EC ref rx %ld not valid\n",
+		pr_debug("%s EC ref rx %ld not valid\n",
 			__func__, ucontrol->value.integer.value[0]);
 		ec_ref_port_id = AFE_PORT_INVALID;
 		break;
@@ -4058,7 +4058,7 @@ static int msm_routing_put_stereo_to_custom_stereo_control(
 	pr_debug("%s E flag %d\n", __func__, flag);
 
 	if ((is_custom_stereo_on && flag) || (!is_custom_stereo_on && !flag)) {
-		pr_err("%s: is_custom_stereo_on %d, flag %d\n",
+		pr_debug("%s: is_custom_stereo_on %d, flag %d\n",
 			__func__, is_custom_stereo_on, flag);
 		return 0;
 	}
@@ -4124,7 +4124,7 @@ static int msm_routing_put_stereo_to_custom_stereo_control(
 						op_FR_ip_FR_weight);
 				if (rc < 0)
 skip_send_custom_stereo:
-					pr_err("%s: err setting custom stereo\n",
+					pr_debug("%s: err setting custom stereo\n",
 						__func__);
 			}
 
@@ -4280,7 +4280,7 @@ static int msm_voice_sound_focus_put(struct snd_kcontrol *kcontrol,
 		sizeof(struct sound_focus_param));
 	ret = voc_set_sound_focus(soundFocusData);
 	if (ret != 0) {
-		pr_err("%s: Error setting Sound Focus Params, err=%d\n",
+		pr_debug("%s: Error setting Sound Focus Params, err=%d\n",
 			  __func__, ret);
 
 		ret = -EINVAL;
@@ -4299,7 +4299,7 @@ static int msm_voice_sound_focus_get(struct snd_kcontrol *kcontrol,
 
 	ret = voc_get_sound_focus(&soundFocusData);
 	if (ret != 0) {
-		pr_err("%s: Error getting Sound Focus Params, err=%d\n",
+		pr_debug("%s: Error getting Sound Focus Params, err=%d\n",
 			  __func__, ret);
 
 		ret = -EINVAL;
@@ -4331,7 +4331,7 @@ static int msm_voice_source_tracking_get(struct snd_kcontrol *kcontrol,
 
 	ret = voc_get_source_tracking(&sourceTrackingData);
 	if (ret != 0) {
-		pr_err("%s: Error getting Source Tracking Params, err=%d\n",
+		pr_debug("%s: Error getting Source Tracking Params, err=%d\n",
 			  __func__, ret);
 
 		ret = -EINVAL;
@@ -4387,7 +4387,7 @@ static int msm_audio_get_copp_idx_from_port_id(int port_id, int session_type,
 			break;
 	}
 	if (i >= MSM_FRONTEND_DAI_MM_SIZE) {
-		pr_err("%s: Invalid FE, exiting\n", __func__);
+		pr_debug("%s: Invalid FE, exiting\n", __func__);
 
 		ret = -EINVAL;
 		goto done;
@@ -4418,7 +4418,7 @@ static int msm_audio_sound_focus_derive_port_id(struct snd_kcontrol *kcontrol,
 					"TERT_MI2S")) {
 		*port_id = AFE_PORT_ID_TERTIARY_MI2S_TX;
 	} else {
-		pr_err("%s: mixer ctl name=%s, could not derive valid port id\n",
+		pr_debug("%s: mixer ctl name=%s, could not derive valid port id\n",
 			__func__, kcontrol->id.name);
 
 		ret = -EINVAL;
@@ -4441,7 +4441,7 @@ static int msm_audio_sound_focus_put(struct snd_kcontrol *kcontrol,
 	ret = msm_audio_sound_focus_derive_port_id(kcontrol,
 				"Sound Focus Audio Tx ", &port_id);
 	if (ret != 0) {
-		pr_err("%s: Error in deriving port id, err=%d\n",
+		pr_debug("%s: Error in deriving port id, err=%d\n",
 			  __func__, ret);
 
 		ret = -EINVAL;
@@ -4451,7 +4451,7 @@ static int msm_audio_sound_focus_put(struct snd_kcontrol *kcontrol,
 	ret = msm_audio_get_copp_idx_from_port_id(port_id, SESSION_TYPE_TX,
 					    &copp_idx);
 	if (ret != 0) {
-		pr_err("%s: Could not get copp idx for port_id=%d\n",
+		pr_debug("%s: Could not get copp idx for port_id=%d\n",
 			__func__, port_id);
 
 		ret = -EINVAL;
@@ -4463,7 +4463,7 @@ static int msm_audio_sound_focus_put(struct snd_kcontrol *kcontrol,
 
 	ret = adm_set_sound_focus(port_id, copp_idx, soundFocusData);
 	if (ret != 0) {
-		pr_err("%s: Error setting Sound Focus Params, err=%d\n",
+		pr_debug("%s: Error setting Sound Focus Params, err=%d\n",
 			  __func__, ret);
 
 		ret = -EINVAL;
@@ -4484,7 +4484,7 @@ static int msm_audio_sound_focus_get(struct snd_kcontrol *kcontrol,
 	ret = msm_audio_sound_focus_derive_port_id(kcontrol,
 				"Sound Focus Audio Tx ", &port_id);
 	if (ret != 0) {
-		pr_err("%s: Error in deriving port id, err=%d\n",
+		pr_debug("%s: Error in deriving port id, err=%d\n",
 			  __func__, ret);
 
 		ret = -EINVAL;
@@ -4494,7 +4494,7 @@ static int msm_audio_sound_focus_get(struct snd_kcontrol *kcontrol,
 	ret = msm_audio_get_copp_idx_from_port_id(port_id, SESSION_TYPE_TX,
 					    &copp_idx);
 	if (ret != 0) {
-		pr_err("%s: Could not get copp idx for port_id=%d\n",
+		pr_debug("%s: Could not get copp idx for port_id=%d\n",
 			__func__, port_id);
 
 		ret = -EINVAL;
@@ -4503,7 +4503,7 @@ static int msm_audio_sound_focus_get(struct snd_kcontrol *kcontrol,
 
 	ret = adm_get_sound_focus(port_id, copp_idx, &soundFocusData);
 	if (ret != 0) {
-		pr_err("%s: Error getting Sound Focus Params, err=%d\n",
+		pr_debug("%s: Error getting Sound Focus Params, err=%d\n",
 			  __func__, ret);
 
 		ret = -EINVAL;
@@ -4527,7 +4527,7 @@ static int msm_audio_source_tracking_get(struct snd_kcontrol *kcontrol,
 	ret = msm_audio_sound_focus_derive_port_id(kcontrol,
 				"Source Tracking Audio Tx ", &port_id);
 	if (ret != 0) {
-		pr_err("%s: Error in deriving port id, err=%d\n",
+		pr_debug("%s: Error in deriving port id, err=%d\n",
 			  __func__, ret);
 
 		ret = -EINVAL;
@@ -4537,7 +4537,7 @@ static int msm_audio_source_tracking_get(struct snd_kcontrol *kcontrol,
 	ret = msm_audio_get_copp_idx_from_port_id(port_id, SESSION_TYPE_TX,
 					    &copp_idx);
 	if (ret != 0) {
-		pr_err("%s: Could not get copp idx for port_id=%d\n",
+		pr_debug("%s: Could not get copp idx for port_id=%d\n",
 			__func__, port_id);
 
 		ret = -EINVAL;
@@ -4546,7 +4546,7 @@ static int msm_audio_source_tracking_get(struct snd_kcontrol *kcontrol,
 
 	ret = adm_get_source_tracking(port_id, copp_idx, &sourceTrackingData);
 	if (ret != 0) {
-		pr_err("%s: Error getting Source Tracking Params, err=%d\n",
+		pr_debug("%s: Error getting Source Tracking Params, err=%d\n",
 			  __func__, ret);
 
 		ret = -EINVAL;
@@ -4652,7 +4652,7 @@ static int spkr_prot_put_vi_lch_port(struct snd_kcontrol *kcontrol,
 				ret = -EINVAL;
 		}
 	} else {
-		pr_err("%s item value is out of range item\n", __func__);
+		pr_debug("%s item value is out of range item\n", __func__);
 		ret = -EINVAL;
 	}
 	mutex_unlock(&routing_lock);
@@ -4690,7 +4690,7 @@ static int spkr_prot_put_vi_rch_port(struct snd_kcontrol *kcontrol,
 				ret = -EINVAL;
 		}
 	} else {
-		pr_err("%s item value is out of range item\n", __func__);
+		pr_debug("%s item value is out of range item\n", __func__);
 		ret = -EINVAL;
 	}
 	mutex_unlock(&routing_lock);
@@ -6497,14 +6497,14 @@ static int msm_routing_send_device_pp_params(int port_id, int copp_idx)
 			break;
 	}
 	if (index >= MSM_BACKEND_DAI_PP_PARAMS_REQ_MAX) {
-		pr_err("%s: Invalid backend pp params index %d\n",
+		pr_debug("%s: Invalid backend pp params index %d\n",
 			__func__, index);
 		return -EINVAL;
 	}
 
 	topo_id = adm_get_topology_for_port_copp_idx(port_id, copp_idx);
 	if (topo_id != COMPRESSED_PASSTHROUGH_DEFAULT_TOPOLOGY) {
-		pr_err("%s: Invalid passthrough topology 0x%x\n",
+		pr_debug("%s: Invalid passthrough topology 0x%x\n",
 			__func__, topo_id);
 		return -EINVAL;
 	}
@@ -6563,7 +6563,7 @@ static int msm_routing_put_device_pp_params_mixer(struct snd_kcontrol *kcontrol,
 			break;
 	}
 	if (index >= MSM_BACKEND_DAI_PP_PARAMS_REQ_MAX) {
-		pr_err("%s: Invalid pp params backend index %d\n",
+		pr_debug("%s: Invalid pp params backend index %d\n",
 			__func__, index);
 		return -EINVAL;
 	}
@@ -6757,7 +6757,7 @@ int msm_routing_check_backend_enabled(int fedai_id)
 	int i;
 	if (fedai_id >= MSM_FRONTEND_DAI_MM_MAX_ID) {
 		/* bad ID assigned in machine driver */
-		pr_err("%s: bad MM ID\n", __func__);
+		pr_debug("%s: bad MM ID\n", __func__);
 		return 0;
 	}
 	for (i = 0; i < MSM_BACKEND_DAI_MAX; i++) {
@@ -6784,7 +6784,7 @@ static int msm_routing_set_cal(int32_t cal_type,
 
 	ret = cal_utils_set_cal(data_size, data, cal_data, 0, NULL);
 	if (ret < 0) {
-		pr_err("%s: cal_utils_set_cal failed, ret = %d, cal type = %d!\n",
+		pr_debug("%s: cal_utils_set_cal failed, ret = %d, cal type = %d!\n",
 			__func__, ret, cal_type);
 		ret = -EINVAL;
 		goto done;

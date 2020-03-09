@@ -367,7 +367,7 @@ static void ipa_del_dflt_wan_rt_tables(void)
 	rt_rule_entry->status = -1;
 	rt_rule_entry->hdl = dflt_v4_wan_rt_hdl;
 
-	IPAWANERR("Deleting Route hdl:(0x%x) with ip type: %d\n",
+	IPAWANDBG("Deleting Route hdl:(0x%x) with ip type: %d\n",
 		rt_rule_entry->hdl, IPA_IP_v4);
 	if (ipa_del_rt_rule(rt_rule) ||
 			(rt_rule_entry->status)) {
@@ -376,7 +376,7 @@ static void ipa_del_dflt_wan_rt_tables(void)
 
 	rt_rule->ip = IPA_IP_v6;
 	rt_rule_entry->hdl = dflt_v6_wan_rt_hdl;
-	IPAWANERR("Deleting Route hdl:(0x%x) with ip type: %d\n",
+	IPAWANDBG("Deleting Route hdl:(0x%x) with ip type: %d\n",
 		rt_rule_entry->hdl, IPA_IP_v6);
 	if (ipa_del_rt_rule(rt_rule) ||
 			(rt_rule_entry->status)) {
@@ -407,9 +407,9 @@ int copy_ul_filter_rule_to_ipa(struct ipa_install_fltr_rule_req_msg_v01
 	for (i = 0; i < num_q6_rule; i++) {
 		/* check if rules overside the cache*/
 		if (i == MAX_NUM_Q6_RULE) {
-			IPAWANERR("Reaching (%d) max cache ",
+			IPAWANDBG("Reaching (%d) max cache ",
 				MAX_NUM_Q6_RULE);
-			IPAWANERR(" however total (%d)\n",
+			IPAWANDBG(" however total (%d)\n",
 				num_q6_rule);
 			goto failure;
 		}
@@ -909,7 +909,7 @@ int wwan_update_mux_channel_prop(void)
 				i);
 			return -ENODEV;
 		}
-		IPAWANERR("dev(%s) has registered to IPA\n",
+		IPAWANDBG("dev(%s) has registered to IPA\n",
 		mux_channel[i].vchannel_name);
 		mux_channel[i].ul_flt_reg = true;
 	}
@@ -1140,7 +1140,7 @@ static void apps_ipa_packet_receive_notify(void *priv,
 
 	IPAWANDBG("Rx packet was received");
 	if (evt != IPA_RECEIVE) {
-		IPAWANERR("A none IPA_RECEIVE event in wan_ipa_receive\n");
+		IPAWANDBG("A none IPA_RECEIVE event in wan_ipa_receive\n");
 		return;
 	}
 
@@ -1377,7 +1377,7 @@ static int ipa_wwan_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd)
 				rmnet_index);
 			/* check if UL filter rules coming*/
 			if (num_q6_rule != 0) {
-				IPAWANERR("dev(%s) register to IPA\n",
+				IPAWANDBG("dev(%s) register to IPA\n",
 					extend_ioctl_data.u.rmnet_mux_val.
 					vchannel_name);
 				rc = wwan_register_to_ipa(rmnet_index);
@@ -1472,7 +1472,7 @@ static int ipa_wwan_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd)
 
 			if ((extend_ioctl_data.u.data) &
 					RMNET_IOCTL_INGRESS_FORMAT_AGG_DATA) {
-				IPAWANERR("get AGG size %d count %d\n",
+				IPAWANDBG("get AGG size %d count %d\n",
 					extend_ioctl_data.u.
 					ingress_format.agg_size,
 					extend_ioctl_data.u.
@@ -1850,12 +1850,12 @@ static int get_ipa_rmnet_dts_configuration(struct platform_device *pdev,
 	ipa_rmnet_drv_res->ipa_rmnet_ssr =
 			of_property_read_bool(pdev->dev.of_node,
 			"qcom,rmnet-ipa-ssr");
-	pr_info("IPA SSR support = %s\n",
+	pr_debug("IPA SSR support = %s\n",
 		ipa_rmnet_drv_res->ipa_rmnet_ssr ? "True" : "False");
 	ipa_rmnet_drv_res->ipa_loaduC =
 			of_property_read_bool(pdev->dev.of_node,
 			"qcom,ipa-loaduC");
-	pr_info("IPA ipa-loaduC = %s\n",
+	pr_debug("IPA ipa-loaduC = %s\n",
 		ipa_rmnet_drv_res->ipa_loaduC ? "True" : "False");
 	return 0;
 }
@@ -1880,7 +1880,7 @@ static int ipa_wwan_probe(struct platform_device *pdev)
 	struct ipa_rm_create_params ipa_rm_params;	/* IPA_RM */
 	struct ipa_rm_perf_profile profile;			/* IPA_RM */
 
-	pr_info("rmnet_ipa started initialization\n");
+	pr_debug("rmnet_ipa started initialization\n");
 
 	if (!ipa_is_ready()) {
 		IPAWANERR("IPA driver not loaded\n");
@@ -2016,7 +2016,7 @@ static int ipa_wwan_probe(struct platform_device *pdev)
 	}
 	atomic_set(&is_ssr, 0);
 
-	pr_info("rmnet_ipa completed initialization\n");
+	pr_debug("rmnet_ipa completed initialization\n");
 	return 0;
 config_err:
 	unregister_netdev(ipa_netdevs[0]);
@@ -2059,7 +2059,7 @@ static int ipa_wwan_remove(struct platform_device *pdev)
 {
 	int ret;
 
-	pr_info("rmnet_ipa started deinitialization\n");
+	pr_debug("rmnet_ipa started deinitialization\n");
 	mutex_lock(&ipa_to_apps_pipe_handle_guard);
 	ret = ipa_teardown_sys_pipe(ipa_to_apps_hdl);
 	if (ret < 0)
@@ -2097,7 +2097,7 @@ static int ipa_wwan_remove(struct platform_device *pdev)
 		wwan_del_ul_flt_rule_to_ipa();
 	ipa_cleanup_deregister_intf();
 	atomic_set(&is_initialized, 0);
-	pr_info("rmnet_ipa completed deinitialization\n");
+	pr_debug("rmnet_ipa completed deinitialization\n");
 	return 0;
 }
 
@@ -2215,7 +2215,7 @@ static int ssr_notifier_cb(struct notifier_block *this,
 {
 	if (ipa_rmnet_ctx.ipa_rmnet_ssr) {
 		if (SUBSYS_BEFORE_SHUTDOWN == code) {
-			pr_info("IPA received MPSS BEFORE_SHUTDOWN\n");
+			pr_debug("IPA received MPSS BEFORE_SHUTDOWN\n");
 			/* send SSR before-shutdown notification to IPACM */
 			rmnet_ipa_send_ssr_notification(false);
 			atomic_set(&is_ssr, 1);
@@ -2227,31 +2227,31 @@ static int ssr_notifier_cb(struct notifier_block *this,
 			ipa_stop_polling_stats();
 			if (atomic_read(&is_initialized))
 				platform_driver_unregister(&rmnet_ipa_driver);
-			pr_info("IPA BEFORE_SHUTDOWN handling is complete\n");
+			pr_debug("IPA BEFORE_SHUTDOWN handling is complete\n");
 			return NOTIFY_DONE;
 		}
 		if (SUBSYS_AFTER_SHUTDOWN == code) {
-			pr_info("IPA received MPSS AFTER_SHUTDOWN\n");
+			pr_debug("IPA received MPSS AFTER_SHUTDOWN\n");
 			if (atomic_read(&is_ssr))
 				ipa_q6_post_shutdown_cleanup();
-			pr_info("IPA AFTER_SHUTDOWN handling is complete\n");
+			pr_debug("IPA AFTER_SHUTDOWN handling is complete\n");
 			return NOTIFY_DONE;
 		}
 		if (SUBSYS_AFTER_POWERUP == code) {
-			pr_info("IPA received MPSS AFTER_POWERUP\n");
+			pr_debug("IPA received MPSS AFTER_POWERUP\n");
 			if (!atomic_read(&is_initialized)
 				&& atomic_read(&is_ssr))
 				platform_driver_register(&rmnet_ipa_driver);
-			pr_info("IPA AFTER_POWERUP handling is complete\n");
+			pr_debug("IPA AFTER_POWERUP handling is complete\n");
 			return NOTIFY_DONE;
 		}
 		if (SUBSYS_BEFORE_POWERUP == code) {
-			pr_info("IPA received MPSS BEFORE_POWERUP\n");
+			pr_debug("IPA received MPSS BEFORE_POWERUP\n");
 			if (atomic_read(&is_ssr))
 				/* clean up cached QMI msg/handlers */
 				ipa_qmi_service_exit();
 			ipa_proxy_clk_vote();
-			pr_info("IPA BEFORE_POWERUP handling is complete\n");
+			pr_debug("IPA BEFORE_POWERUP handling is complete\n");
 			return NOTIFY_DONE;
 		}
 	}
@@ -2311,7 +2311,7 @@ static void rmnet_ipa_get_stats_and_update(bool reset)
 	if (reset == true) {
 		req.reset_stats_valid = true;
 		req.reset_stats = true;
-		IPAWANERR("Get the latest pipe-stats and reset it\n");
+		IPAWANDBG("Get the latest pipe-stats and reset it\n");
 	}
 
 	rc = ipa_qmi_get_data_stats(&req, resp);
@@ -2463,7 +2463,7 @@ int rmnet_ipa_set_data_quota(struct wan_ioctl_set_data_quota *data)
 	data->interface_name[IFNAMSIZ-1] = '\0';
 
 	index = find_vchannel_name_index(data->interface_name);
-	IPAWANERR("iface name %s, quota %lu\n",
+	IPAWANDBG("iface name %s, quota %lu\n",
 			  data->interface_name,
 			  (unsigned long int) data->quota_mbytes);
 
@@ -2577,7 +2577,7 @@ int rmnet_ipa_query_tethering_stats(struct wan_ioctl_query_tether_stats *data,
 	if (reset) {
 		req->reset_stats_valid = true;
 		req->reset_stats = true;
-		IPAWANERR("reset the pipe stats\n");
+		IPAWANDBG("reset the pipe stats\n");
 	} else {
 		/* print tethered-client enum */
 		IPAWANDBG("Tethered-client enum(%d)\n", data->ipa_client);
@@ -2737,7 +2737,7 @@ void ipa_broadcast_quota_reach_ind(u32 mux_id)
 	index = find_mux_channel_index(mux_id);
 
 	if (index == MAX_NUM_OF_MUX_CHANNEL) {
-		IPAWANERR("%u is an mux ID\n", mux_id);
+		IPAWANDBG("%u is an mux ID\n", mux_id);
 		return;
 	}
 
@@ -2762,7 +2762,7 @@ void ipa_broadcast_quota_reach_ind(u32 mux_id)
 		return;
 	}
 
-	IPAWANERR("putting nlmsg: <%s> <%s> <%s>\n",
+	IPAWANDBG("putting nlmsg: <%s> <%s> <%s>\n",
 		alert_msg, iface_name_l, iface_name_m);
 	kobject_uevent_env(&(ipa_netdevs[0]->dev.kobj), KOBJ_CHANGE, envp);
 

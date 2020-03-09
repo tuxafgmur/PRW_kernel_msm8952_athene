@@ -949,22 +949,22 @@ void msm_isp_notify(struct vfe_device *vfe_dev, uint32_t event_type,
 	case ISP_EVENT_SOF:
 		if (frame_src == VFE_PIX_0) {
 			if (vfe_dev->isp_sof_debug < ISP_SOF_DEBUG_COUNT)
-				pr_err("%s: PIX0 frame id: %u\n", __func__,
+				pr_debug("%s: PIX0 frame id: %u\n", __func__,
 				vfe_dev->axi_data.src_info[VFE_PIX_0].frame_id);
 			vfe_dev->isp_sof_debug++;
 		} else if (frame_src == VFE_RAW_0) {
 			if (vfe_dev->isp_raw0_debug < ISP_SOF_DEBUG_COUNT)
-				pr_err("%s: RAW_0 frame id: %u\n", __func__,
+				pr_debug("%s: RAW_0 frame id: %u\n", __func__,
 				vfe_dev->axi_data.src_info[VFE_RAW_0].frame_id);
 			vfe_dev->isp_raw0_debug++;
 		} else if (frame_src == VFE_RAW_1) {
 			if (vfe_dev->isp_raw1_debug < ISP_SOF_DEBUG_COUNT)
-				pr_err("%s: RAW_1 frame id: %u\n", __func__,
+				pr_debug("%s: RAW_1 frame id: %u\n", __func__,
 				vfe_dev->axi_data.src_info[VFE_RAW_1].frame_id);
 			vfe_dev->isp_raw1_debug++;
 		} else if (frame_src == VFE_RAW_2) {
 			if (vfe_dev->isp_raw2_debug < ISP_SOF_DEBUG_COUNT)
-				pr_err("%s: RAW_2 frame id: %u\n", __func__,
+				pr_debug("%s: RAW_2 frame id: %u\n", __func__,
 				vfe_dev->axi_data.src_info[VFE_RAW_2].frame_id);
 			vfe_dev->isp_raw2_debug++;
 		}

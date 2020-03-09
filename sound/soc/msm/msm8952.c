@@ -1557,7 +1557,7 @@ static int msm_sec_mi2s_snd_startup(struct snd_pcm_substream *substream)
 				substream->name, substream->stream);
 
 	if (substream->stream == SNDRV_PCM_STREAM_CAPTURE) {
-		pr_info("%s: Secondary Mi2s does not support capture\n",
+		pr_debug("%s: Secondary Mi2s does not support capture\n",
 					__func__);
 		return 0;
 	}
@@ -3266,7 +3266,7 @@ static int msm8952_asoc_machine_probe(struct platform_device *pdev)
 	card = &bear_card;
 	bear_card.name = dev_name(&pdev->dev);
 	card = &bear_card;
-	dev_info(&pdev->dev, "default codec configured\n");
+	//dev_info(&pdev->dev, "default codec configured\n");
 	num_strings = of_property_count_strings(pdev->dev.of_node,
 			ext_pa);
 	if (num_strings < 0) {
@@ -3386,7 +3386,7 @@ static int msm8952_asoc_machine_probe(struct platform_device *pdev)
 
 	ret = snd_soc_register_card(card);
 	if (ret) {
-		dev_err(&pdev->dev, "snd_soc_register_card failed (%d)\n",
+		dev_dbg(&pdev->dev, "snd_soc_register_card failed (%d)\n",
 			ret);
 		goto err;
 	}

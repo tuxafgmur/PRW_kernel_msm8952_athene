@@ -1033,7 +1033,7 @@ static int msm_sec_mi2s_snd_startup(struct snd_pcm_substream *substream)
 				substream->name, substream->stream);
 
 	if (substream->stream == SNDRV_PCM_STREAM_CAPTURE) {
-		pr_info("%s: Secondary Mi2s does not support capture\n",
+		pr_debug("%s: Secondary Mi2s does not support capture\n",
 					__func__);
 		return 0;
 	}
@@ -1143,7 +1143,7 @@ static int msm_quat_mi2s_snd_startup(struct snd_pcm_substream *substream)
 	pr_debug("%s(): substream = %s  stream = %d\n", __func__,
 				substream->name, substream->stream);
 	if (substream->stream == SNDRV_PCM_STREAM_CAPTURE) {
-		pr_info("%s: Quaternary Mi2s does not support capture\n",
+		pr_debug("%s: Quaternary Mi2s does not support capture\n",
 					__func__);
 		return 0;
 	}
@@ -2639,7 +2639,7 @@ static int msm8x16_asoc_machine_probe(struct platform_device *pdev)
 		goto err;
 	}
 	if (!strcmp(ptr, "external")) {
-		dev_info(&pdev->dev, "external codec is configured\n");
+		//dev_info(&pdev->dev, "external codec is configured\n");
 		pdata->codec_type = 1;
 			/*Populate external codec TLMM configs*/
 		ret = populate_ext_snd_card_dt_data(pdev);
@@ -2655,7 +2655,7 @@ static int msm8x16_asoc_machine_probe(struct platform_device *pdev)
 		card = &bear_cards[pdev->id];
 		bear_cards[pdev->id].name = dev_name(&pdev->dev);
 		card = &bear_cards[pdev->id];
-		dev_info(&pdev->dev, "default codec configured\n");
+		//dev_info(&pdev->dev, "default codec configured\n");
 		pdata->codec_type = 0;
 		num_strings = of_property_count_strings(pdev->dev.of_node,
 				ext_pa);
