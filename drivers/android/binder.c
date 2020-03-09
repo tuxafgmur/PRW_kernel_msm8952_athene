@@ -1769,7 +1769,6 @@ static int binder_translate_fd_array(struct binder_fd_array_object *fda,
 	int target_fd;
 	uintptr_t parent_buffer;
 	u32 *fd_array;
-	struct binder_proc *proc = thread->proc;
 	struct binder_proc *target_proc = t->to_proc;
 
 	fd_buf_size = sizeof(u32) * fda->num_fds;
@@ -1827,7 +1826,6 @@ static int binder_fixup_parent(struct binder_transaction *t,
 	struct binder_buffer_object *parent;
 	u8 *parent_buffer;
 	struct binder_buffer *b = t->buffer;
-	struct binder_proc *proc = thread->proc;
 	struct binder_proc *target_proc = t->to_proc;
 
 	if (!(bp->flags & BINDER_BUFFER_FLAG_HAS_PARENT))
@@ -3367,8 +3365,6 @@ err_unlocked:
 
 static void binder_vma_open(struct vm_area_struct *vma)
 {
-	struct binder_proc *proc = vma->vm_private_data;
-
 	binder_debug(BINDER_DEBUG_OPEN_CLOSE,
 		     "%d open vm area %lx-%lx (%ld K) vma %lx pagep %lx\n",
 		     proc->pid, vma->vm_start, vma->vm_end,
