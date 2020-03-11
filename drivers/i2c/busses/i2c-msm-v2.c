@@ -1653,7 +1653,7 @@ static int i2c_msm_clk_path_postponed_register(struct i2c_msm_ctrl *ctrl)
 			/* log a success message if an error msg was logged */
 			ctrl->rsrcs.clk_path_vote.reg_err = false;
 			dev_err(ctrl->dev,
-				"msm_bus_scale_register_client(mstr-id:%d):0x%x (ok)",
+				"msm_bus_scale_register_client(mstr-id:%d):0x%x",
 				ctrl->rsrcs.clk_path_vote.mstr_id,
 				ctrl->rsrcs.clk_path_vote.client_hdl);
 		}
@@ -1663,7 +1663,7 @@ static int i2c_msm_clk_path_postponed_register(struct i2c_msm_ctrl *ctrl)
 			ctrl->rsrcs.clk_path_vote.reg_err = true;
 
 			dev_info(ctrl->dev,
-				"msm_bus_scale_register_client(mstr-id:%d):0 (not a problem)",
+				"msm_bus_scale_register_client(mstr-id:%d):0",
 				ctrl->rsrcs.clk_path_vote.mstr_id);
 		}
 	}
@@ -2621,21 +2621,21 @@ static int i2c_msm_rsrcs_clk_init(struct i2c_msm_ctrl *ctrl)
 	ctrl->rsrcs.core_clk = clk_get(ctrl->dev, "core_clk");
 	if (IS_ERR(ctrl->rsrcs.core_clk)) {
 		ret = PTR_ERR(ctrl->rsrcs.core_clk);
-		dev_err(ctrl->dev, "error on clk_get(core_clk):%d\n", ret);
+		//dev_err(ctrl->dev, "error on clk_get(core_clk):%d\n", ret);
 		return ret;
 	}
 
 	ret = clk_set_rate(ctrl->rsrcs.core_clk, ctrl->rsrcs.clk_freq_in);
 	if (ret) {
-		dev_err(ctrl->dev, "error on clk_set_rate(core_clk, %dKHz):%d\n",
-					(ctrl->rsrcs.clk_freq_in / 1000), ret);
+		//dev_err(ctrl->dev, "error on clk_set_rate(core_clk, %dKHz):%d\n",
+		//			(ctrl->rsrcs.clk_freq_in / 1000), ret);
 		goto err_set_rate;
 	}
 
 	ctrl->rsrcs.iface_clk = clk_get(ctrl->dev, "iface_clk");
 	if (IS_ERR(ctrl->rsrcs.iface_clk)) {
 		ret = PTR_ERR(ctrl->rsrcs.iface_clk);
-		dev_err(ctrl->dev, "error on clk_get(iface_clk):%d\n", ret);
+		//dev_err(ctrl->dev, "error on clk_get(iface_clk):%d\n", ret);
 		goto err_set_rate;
 	}
 
@@ -2661,7 +2661,7 @@ static void i2c_msm_pm_suspend(struct device *dev)
 	struct i2c_msm_ctrl *ctrl = dev_get_drvdata(dev);
 
 	if (ctrl->pwr_state == I2C_MSM_PM_RT_SUSPENDED) {
-		dev_err(ctrl->dev, "attempt to suspend when suspended\n");
+		//dev_err(ctrl->dev, "attempt to suspend when suspended\n");
 		return;
 	}
 	i2c_msm_dbg(ctrl, MSM_DBG, "suspending...");
@@ -2839,7 +2839,7 @@ static int i2c_msm_probe(struct platform_device *pdev)
 	struct i2c_msm_ctrl *ctrl;
 	int ret = 0;
 
-	dev_info(&pdev->dev, "probing driver i2c-msm-v2\n");
+	//dev_info(&pdev->dev, "probing driver i2c-msm-v2\n");
 
 	ctrl = devm_kzalloc(&pdev->dev, sizeof(*ctrl), GFP_KERNEL);
 	if (!ctrl)
@@ -2919,7 +2919,7 @@ err_no_pinctrl:
 clk_err:
 	i2c_msm_rsrcs_mem_teardown(ctrl);
 mem_err:
-	dev_err(ctrl->dev, "error probe() failed with err:%d\n", ret);
+	//dev_err(ctrl->dev, "error probe() failed with err:%d\n", ret);
 	devm_kfree(&pdev->dev, ctrl);
 	return ret;
 }
