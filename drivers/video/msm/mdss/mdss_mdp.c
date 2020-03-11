@@ -280,7 +280,7 @@ static int mdss_mdp_bus_scale_register(struct mdss_data_type *mdata)
 		mdata->bus_hdl =
 			msm_bus_scale_register_client(mdata->bus_scale_table);
 		if (!mdata->bus_hdl) {
-			pr_err("bus_client register failed\n");
+			//pr_err("bus_client register failed\n");
 			return -EINVAL;
 		}
 
@@ -299,7 +299,7 @@ static int mdss_mdp_bus_scale_register(struct mdss_data_type *mdata)
 			msm_bus_scale_register_client(reg_bus_pdata);
 		if (!mdata->reg_bus_hdl) {
 			/* Continue without reg_bus scaling */
-			pr_warn("reg_bus_client register failed\n");
+			//pr_warn("reg_bus_client register failed\n");
 		} else
 			pr_debug("register reg_bus_hdl=%x\n",
 					mdata->reg_bus_hdl);
@@ -494,8 +494,8 @@ int mdss_mdp_irq_enable(u32 intr_type, u32 intf_num)
 
 	spin_lock_irqsave(&mdp_lock, irq_flags);
 	if (mdata->mdp_irq_mask & irq) {
-		pr_warn("MDSS MDP IRQ-0x%x is already set, mask=%x\n",
-				irq, mdata->mdp_irq_mask);
+		//pr_warn("MDSS MDP IRQ-0x%x is already set, mask=%x\n",
+		//		irq, mdata->mdp_irq_mask);
 		ret = -EBUSY;
 	} else {
 		pr_debug("MDP IRQ mask old=%x new=%x\n",
@@ -517,8 +517,8 @@ int mdss_mdp_hist_irq_enable(u32 irq)
 	struct mdss_data_type *mdata = mdss_mdp_get_mdata();
 
 	if (mdata->mdp_hist_irq_mask & irq) {
-		pr_warn("MDSS MDP Hist IRQ-0x%x is already set, mask=%x\n",
-				irq, mdata->mdp_hist_irq_mask);
+		//pr_warn("MDSS MDP Hist IRQ-0x%x is already set, mask=%x\n",
+		//		irq, mdata->mdp_hist_irq_mask);
 		ret = -EBUSY;
 	} else {
 		pr_debug("MDP IRQ mask old=%x new=%x\n",
@@ -540,8 +540,8 @@ void mdss_mdp_irq_disable(u32 intr_type, u32 intf_num)
 
 	spin_lock_irqsave(&mdp_lock, irq_flags);
 	if (!(mdata->mdp_irq_mask & irq)) {
-		pr_warn("MDSS MDP IRQ-%x is NOT set, mask=%x\n",
-				irq, mdata->mdp_irq_mask);
+		//pr_warn("MDSS MDP IRQ-%x is NOT set, mask=%x\n",
+		//		irq, mdata->mdp_irq_mask);
 	} else {
 		mdata->mdp_irq_mask &= ~irq;
 
@@ -559,8 +559,8 @@ void mdss_mdp_hist_irq_disable(u32 irq)
 	struct mdss_data_type *mdata = mdss_mdp_get_mdata();
 
 	if (!(mdata->mdp_hist_irq_mask & irq)) {
-		pr_warn("MDSS MDP IRQ-%x is NOT set, mask=%x\n",
-				irq, mdata->mdp_hist_irq_mask);
+		//pr_warn("MDSS MDP IRQ-%x is NOT set, mask=%x\n",
+		//		irq, mdata->mdp_hist_irq_mask);
 	} else {
 		mdata->mdp_hist_irq_mask &= ~irq;
 		writel_relaxed(mdata->mdp_hist_irq_mask, mdata->mdp_base +
@@ -589,8 +589,8 @@ void mdss_mdp_irq_disable_nosync(u32 intr_type, u32 intf_num)
 	irq = mdss_mdp_irq_mask(intr_type, intf_num);
 
 	if (!(mdata->mdp_irq_mask & irq)) {
-		pr_warn("MDSS MDP IRQ-%x is NOT set, mask=%x\n",
-				irq, mdata->mdp_irq_mask);
+		//pr_warn("MDSS MDP IRQ-%x is NOT set, mask=%x\n",
+		//		irq, mdata->mdp_irq_mask);
 	} else {
 		mdata->mdp_irq_mask &= ~irq;
 		writel_relaxed(mdata->mdp_irq_mask, mdata->mdp_base +
@@ -973,7 +973,7 @@ static inline int mdss_mdp_irq_clk_register(struct mdss_data_type *mdata,
 
 	tmp = devm_clk_get(&mdata->pdev->dev, clk_name);
 	if (IS_ERR(tmp)) {
-		pr_err("unable to get clk: %s\n", clk_name);
+		//pr_err("unable to get clk: %s\n", clk_name);
 		return PTR_ERR(tmp);
 	}
 
@@ -996,9 +996,9 @@ static void __mdss_restore_sec_cfg(struct mdss_data_type *mdata)
 	mdss_mdp_clk_update(MDSS_CLK_MDP_CORE, 1);
 
 	ret = scm_restore_sec_cfg(SEC_DEVICE_MDSS, 0, &scm_ret);
-	if (ret || scm_ret)
-		pr_warn("scm_restore_sec_cfg failed %d %d\n",
-				ret, scm_ret);
+	//if (ret || scm_ret)
+	//	pr_warn("scm_restore_sec_cfg failed %d %d\n",
+	//			ret, scm_ret);
 
 	mdss_mdp_clk_update(MDSS_CLK_AHB, 0);
 	mdss_mdp_clk_update(MDSS_CLK_AXI, 0);
@@ -1081,7 +1081,7 @@ static int mdss_mdp_irq_clk_setup(struct mdss_data_type *mdata)
 	mdata->gdsc_cb.notifier_call = mdss_mdp_gdsc_notifier_call;
 	mdata->gdsc_cb.priority = 5;
 	if (regulator_register_notifier(mdata->fs, &(mdata->gdsc_cb)))
-		pr_warn("GDSC notification registration failed!\n");
+		pr_debug("GDSC notification registration failed!\n");
 	else
 		mdata->regulator_notif_register = true;
 
@@ -1201,7 +1201,7 @@ static int mdss_iommu_init(struct mdss_data_type *mdata)
 	int i;
 
 	if (mdata->iommu_map) {
-		pr_warn("iommu already initialized\n");
+		//pr_warn("iommu already initialized\n");
 		return 0;
 	}
 
@@ -1232,8 +1232,8 @@ static int mdss_iommu_init(struct mdss_data_type *mdata)
 
 		iomap->ctx = msm_iommu_get_ctx(iomap->ctx_name);
 		if (!iomap->ctx) {
-			pr_warn("unable to get iommu ctx(%s)\n",
-				iomap->ctx_name);
+			//pr_warn("unable to get iommu ctx(%s)\n",
+			//	iomap->ctx_name);
 			return -EINVAL;
 		}
 	}
@@ -1491,8 +1491,8 @@ void mdss_mdp_footswitch_ctrl_splash(int on)
 			regulator_disable(mdata->fs);
 			mdata->handoff_pending = false;
 		}
-	} else {
-		pr_warn("mdss mdata not initialized\n");
+	//} else {
+	//	pr_warn("mdss mdata not initialized\n");
 	}
 }
 
@@ -1975,7 +1975,7 @@ int mdss_mdp_parse_dt_hw_settings(struct platform_device *pdev)
 	vbif_arr = of_get_property(pdev->dev.of_node, "qcom,vbif-settings",
 			&vbif_len);
 	if (!vbif_arr || (vbif_len & 1)) {
-		pr_warn("MDSS VBIF settings not found\n");
+		//pr_warn("MDSS VBIF settings not found\n");
 		vbif_len = 0;
 	}
 	vbif_len /= 2 * sizeof(u32);
@@ -1991,7 +1991,7 @@ int mdss_mdp_parse_dt_hw_settings(struct platform_device *pdev)
 	mdp_arr = of_get_property(pdev->dev.of_node, "qcom,mdp-settings",
 			&mdp_len);
 	if (!mdp_arr || (mdp_len & 1)) {
-		pr_warn("MDSS MDP settings not found\n");
+		//pr_warn("MDSS MDP settings not found\n");
 		mdp_len = 0;
 	}
 	mdp_len /= 2 * sizeof(u32);
@@ -2882,8 +2882,8 @@ static int mdss_mdp_parse_dt_smp(struct platform_device *pdev)
 		rc = mdss_mdp_update_smp_map(pdev, arr, len,
 				mdata->nrgb_pipes, mdata->rgb_pipes);
 
-		if (rc)
-			pr_warn("unable to update smp map for RGB pipes\n");
+		//if (rc)
+		//	pr_warn("unable to update smp map for RGB pipes\n");
 	}
 
 	arr = of_get_property(pdev->dev.of_node,
@@ -2892,8 +2892,8 @@ static int mdss_mdp_parse_dt_smp(struct platform_device *pdev)
 		rc = mdss_mdp_update_smp_map(pdev, arr, len,
 				mdata->nvig_pipes, mdata->vig_pipes);
 
-		if (rc)
-			pr_warn("unable to update smp map for VIG pipes\n");
+		//if (rc)
+		//	pr_warn("unable to update smp map for VIG pipes\n");
 	}
 	return rc;
 }
@@ -3174,7 +3174,7 @@ static int mdss_mdp_parse_dt_misc(struct platform_device *pdev)
 			mdata->wfd_mode = MDSS_MDP_WFD_SHARED;
 		}
 	} else {
-		pr_warn("wfd mode not configured. Set to default: Shared\n");
+		//pr_warn("wfd mode not configured. Set to default: Shared\n");
 		mdata->wfd_mode = MDSS_MDP_WFD_SHARED;
 	}
 
@@ -3415,7 +3415,7 @@ static int mdss_mdp_parse_dt_handler(struct platform_device *pdev,
 	rc = of_property_read_u32_array(pdev->dev.of_node, prop_name,
 					offsets, len);
 	if (rc) {
-		pr_err("Error from prop %s : u32 array read\n", prop_name);
+		//pr_err("Error from prop %s : u32 array read\n", prop_name);
 		return -EINVAL;
 	}
 
@@ -3430,8 +3430,8 @@ static int mdss_mdp_parse_dt_prop_len(struct platform_device *pdev,
 	of_find_property(pdev->dev.of_node, prop_name, &len);
 
 	if (len < 1) {
-		pr_info("prop %s : doesn't exist in device tree\n",
-			prop_name);
+		//pr_info("prop %s : doesn't exist in device tree\n",
+		//	prop_name);
 		return 0;
 	}
 
@@ -3789,8 +3789,8 @@ static void mdss_mdp_footswitch_ctrl(struct mdss_data_type *mdata, int on)
 		if (!mdata->fs_ena) {
 			pr_debug("Enable MDP FS\n");
 			ret = regulator_enable(mdata->fs);
-			if (ret)
-				pr_warn("Footswitch failed to enable\n");
+			//if (ret)
+			//	pr_warn("Footswitch failed to enable\n");
 			mdss_mdp_cx_ctrl(mdata, true);
 			if (!mdata->idle_pc)
 				mdss_mdp_batfet_ctrl(mdata, true);

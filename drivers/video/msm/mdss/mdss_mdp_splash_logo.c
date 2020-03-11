@@ -620,7 +620,7 @@ static __ref int mdss_mdp_splash_parse_dt(struct msm_fb_data_type *mfd)
 		child_node = of_get_child_by_name(pdev->dev.of_node,
 					"qcom,cont-splash-memory");
 		if (!child_node) {
-			pr_err("splash mem child node is not present\n");
+			//pr_err("splash mem child node is not present\n");
 			rc = -EINVAL;
 			goto error;
 		}

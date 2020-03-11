@@ -82,8 +82,8 @@ static struct resource *msm_dss_get_res_byname(struct platform_device *pdev,
 	struct resource *res = NULL;
 
 	res = platform_get_resource_byname(pdev, type, name);
-	if (!res)
-		DEV_ERR("%s: '%s' resource not found\n", __func__, name);
+	//if (!res)
+	//	DEV_ERR("%s: '%s' resource not found\n", __func__, name);
 
 	return res;
 } /* msm_dss_get_res_byname */
