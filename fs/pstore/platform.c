@@ -192,7 +192,7 @@ int  pstore_annotate(const char *buf)
 	const char *end = buf + cnt;
 
 	if (!psinfo) {
-		pr_warn("device not present!\n");
+		//pr_warn("device not present!\n");
 		return -ENODEV;
 	}
 
