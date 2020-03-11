@@ -485,8 +485,8 @@ void pm_qos_add_request(struct pm_qos_request *req,
 		} else {
 			req->type = PM_QOS_REQ_ALL_CORES;
 			cpumask_setall(&req->cpus_affine);
-			WARN(1, KERN_ERR "IRQ-%d not set for request with affinity flag\n",
-					req->irq);
+			//WARN(1, KERN_ERR "IRQ-%d not set for request with affinity flag\n",
+			//		req->irq);
 		}
 		break;
 #endif
