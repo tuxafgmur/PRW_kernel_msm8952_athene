@@ -1257,7 +1257,7 @@ static int32_t msm_sensor_driver_platform_probe(struct platform_device *pdev)
 		&s_ctrl->sensordata->power_info.clk_ptr,
 		&s_ctrl->sensordata->power_info.clk_info_size);
 	if (rc < 0) {
-		pr_err("failed: msm_camera_get_clk_info rc %d", rc);
+		//pr_err("failed: msm_camera_get_clk_info rc %d", rc);
 		goto FREE_S_CTRL;
 	}
 

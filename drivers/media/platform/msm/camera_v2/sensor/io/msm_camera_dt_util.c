@@ -1031,8 +1031,8 @@ int msm_camera_get_dt_vreg_data(struct device_node *of_node,
 	CDBG("%s qcom,cam-vreg-name count %d\n", __func__, count);
 
 	if (!count || (count == -EINVAL)) {
-		pr_err("%s:%d number of entries is 0 or not present in dts\n",
-			__func__, __LINE__);
+		//pr_err("%s:%d number of entries is 0 or not present in dts\n",
+		//	__func__, __LINE__);
 		*num_vreg = 0;
 		return 0;
 	}

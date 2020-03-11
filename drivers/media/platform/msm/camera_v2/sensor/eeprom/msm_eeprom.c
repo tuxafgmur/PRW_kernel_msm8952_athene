@@ -829,7 +829,7 @@ static int msm_eeprom_i2c_probe(struct i2c_client *client,
 		&e_ctrl->eboard_info->power_info.clk_ptr,
 		&e_ctrl->eboard_info->power_info.clk_info_size);
 	if (rc < 0) {
-		pr_err("failed: msm_camera_get_clk_info rc %d", rc);
+		//pr_err("failed: msm_camera_get_clk_info rc %d", rc);
 		goto ectrl_free;
 	}
 
