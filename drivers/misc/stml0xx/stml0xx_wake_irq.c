@@ -177,16 +177,16 @@ void stml0xx_irq_wake_work_func(struct work_struct *work)
 			0,
 			stm_ws->ts_ns);
 
-		dev_info(&stml0xx_misc_data->spi->dev,
-			"Sending Proximity distance %d als %d stowed %d raw_prox %d noise_floor %d recal_thresh %d low_thresh %d high_thresh %d\n",
-			buf[WAKE_IRQ_IDX_PROX],
-			SH_TO_UH16(buf + WAKE_IRQ_IDX_PROX_ALS),
-			buf[WAKE_IRQ_IDX_STOWED],
-			SH_TO_UH16(buf + WAKE_IRQ_IDX_PROX_RAW),
-			SH_TO_UH16(buf + WAKE_IRQ_IDX_PROX_NOISE),
-			SH_TO_UH16(buf + WAKE_IRQ_IDX_PROX_RECAL),
-			SH_TO_UH16(buf + WAKE_IRQ_IDX_PROX_LTHRESH),
-			SH_TO_UH16(buf + WAKE_IRQ_IDX_PROX_HTHRESH));
+		//dev_info(&stml0xx_misc_data->spi->dev,
+		//	"Sending Proximity distance %d als %d stowed %d raw_prox %d noise_floor %d recal_thresh %d low_thresh %d high_thresh %d\n",
+		//	buf[WAKE_IRQ_IDX_PROX],
+		//	SH_TO_UH16(buf + WAKE_IRQ_IDX_PROX_ALS),
+		//	buf[WAKE_IRQ_IDX_STOWED],
+		//	SH_TO_UH16(buf + WAKE_IRQ_IDX_PROX_RAW),
+		//	SH_TO_UH16(buf + WAKE_IRQ_IDX_PROX_NOISE),
+		//	SH_TO_UH16(buf + WAKE_IRQ_IDX_PROX_RECAL),
+		//	SH_TO_UH16(buf + WAKE_IRQ_IDX_PROX_LTHRESH),
+		//	SH_TO_UH16(buf + WAKE_IRQ_IDX_PROX_HTHRESH));
 	}
 	if (irq_status & M_COVER) {
 		int state = 0;
@@ -200,8 +200,8 @@ void stml0xx_irq_wake_work_func(struct work_struct *work)
 		input_report_switch(ps_stml0xx->input_dev, SW_LID, state);
 		input_sync(ps_stml0xx->input_dev);
 
-		dev_info(&stml0xx_misc_data->spi->dev,
-			"Cover status: %d", state);
+		//dev_info(&stml0xx_misc_data->spi->dev,
+		//	"Cover status: %d", state);
 	}
 	if (irq_status & M_HEADSET) {
 		uint8_t new_state;
@@ -211,8 +211,8 @@ void stml0xx_irq_wake_work_func(struct work_struct *work)
 		switch (Headset_State) {
 		case SH_HEADSET_BUTTON_1:
 			if (!(new_state & SH_HEADSET_BUTTON_1_DOWN)) {
-				dev_info(&stml0xx_misc_data->spi->dev,
-					"Headset button 1 released");
+				//dev_info(&stml0xx_misc_data->spi->dev,
+				//	"Headset button 1 released");
 				Headset_State = SH_HEADSET_INSERTED;
 				input_report_key(ps_stml0xx->input_dev,
 					stml0xx_misc_data->pdata->headset_button_1_keycode,
@@ -222,8 +222,8 @@ void stml0xx_irq_wake_work_func(struct work_struct *work)
 			break;
 		case SH_HEADSET_BUTTON_2:
 			if (!(new_state & SH_HEADSET_BUTTON_2_DOWN)) {
-				dev_info(&stml0xx_misc_data->spi->dev,
-					"Headset button 2 released");
+				//dev_info(&stml0xx_misc_data->spi->dev,
+				//	"Headset button 2 released");
 				Headset_State = SH_HEADSET_INSERTED;
 				input_report_key(ps_stml0xx->input_dev,
 					stml0xx_misc_data->pdata->headset_button_2_keycode,
@@ -233,8 +233,8 @@ void stml0xx_irq_wake_work_func(struct work_struct *work)
 			break;
 		case SH_HEADSET_BUTTON_3:
 			if (!(new_state & SH_HEADSET_BUTTON_3_DOWN)) {
-				dev_info(&stml0xx_misc_data->spi->dev,
-					"Headset button 3 released");
+				//dev_info(&stml0xx_misc_data->spi->dev,
+				//	"Headset button 3 released");
 				Headset_State = SH_HEADSET_INSERTED;
 				input_report_key(ps_stml0xx->input_dev,
 					stml0xx_misc_data->pdata->headset_button_3_keycode,
@@ -244,8 +244,8 @@ void stml0xx_irq_wake_work_func(struct work_struct *work)
 			break;
 		case SH_HEADSET_BUTTON_4:
 			if (!(new_state & SH_HEADSET_BUTTON_4_DOWN)) {
-				dev_info(&stml0xx_misc_data->spi->dev,
-					"Headset button 4 released");
+				//dev_info(&stml0xx_misc_data->spi->dev,
+				//	"Headset button 4 released");
 				Headset_State = SH_HEADSET_INSERTED;
 				input_report_key(ps_stml0xx->input_dev,
 					stml0xx_misc_data->pdata->headset_button_4_keycode,
@@ -258,8 +258,8 @@ void stml0xx_irq_wake_work_func(struct work_struct *work)
 		}
 		if (Headset_State == SH_HEADPHONE_INSERTED) {
 			if (!(new_state & SH_HEADPHONE_DETECTED)) {
-				dev_info(&stml0xx_misc_data->spi->dev,
-					"Headphone removed");
+				//dev_info(&stml0xx_misc_data->spi->dev,
+				//	"Headphone removed");
 				Headset_State = SH_HEADSET_REMOVED;
 				input_report_switch(ps_stml0xx->input_dev,
 						SW_HEADPHONE_INSERT, 0);
@@ -267,8 +267,8 @@ void stml0xx_irq_wake_work_func(struct work_struct *work)
 			}
 		} else if (Headset_State ==  SH_HEADSET_INSERTED) {
 			if (!(new_state & SH_HEADSET_DETECTED)) {
-				dev_info(&stml0xx_misc_data->spi->dev,
-					"Headset removed");
+				//dev_info(&stml0xx_misc_data->spi->dev,
+				//	"Headset removed");
 				Headset_State = SH_HEADSET_REMOVED;
 				input_report_switch(ps_stml0xx->input_dev,
 						SW_HEADPHONE_INSERT,  0);
@@ -279,15 +279,15 @@ void stml0xx_irq_wake_work_func(struct work_struct *work)
 		}
 		if (Headset_State == SH_HEADSET_REMOVED) {
 			if (new_state & SH_HEADPHONE_DETECTED) {
-				dev_info(&stml0xx_misc_data->spi->dev,
-					"Headphone inserted");
+				//dev_info(&stml0xx_misc_data->spi->dev,
+				//	"Headphone inserted");
 				Headset_State = SH_HEADPHONE_INSERTED;
 				input_report_switch(ps_stml0xx->input_dev,
 						SW_HEADPHONE_INSERT, 1);
 				input_sync(ps_stml0xx->input_dev);
 			} else if (new_state & SH_HEADSET_DETECTED) {
-				dev_info(&stml0xx_misc_data->spi->dev,
-					"Headset inserted");
+				//dev_info(&stml0xx_misc_data->spi->dev,
+				//	"Headset inserted");
 				Headset_State = SH_HEADSET_INSERTED;
 				input_report_switch(ps_stml0xx->input_dev,
 						SW_HEADPHONE_INSERT,  1);
@@ -298,32 +298,32 @@ void stml0xx_irq_wake_work_func(struct work_struct *work)
 		}
 		if (Headset_State == SH_HEADSET_INSERTED) {
 			if (new_state & SH_HEADSET_BUTTON_1_DOWN) {
-				dev_info(&stml0xx_misc_data->spi->dev,
-					"Headset button 1 pressed");
+				//dev_info(&stml0xx_misc_data->spi->dev,
+				//	"Headset button 1 pressed");
 				Headset_State = SH_HEADSET_BUTTON_1;
 				input_report_key(ps_stml0xx->input_dev,
 					stml0xx_misc_data->pdata->headset_button_1_keycode,
 					1);
 				input_sync(ps_stml0xx->input_dev);
 			} else if (new_state & SH_HEADSET_BUTTON_2_DOWN) {
-				dev_info(&stml0xx_misc_data->spi->dev,
-					"Headset button 2 pressed");
+				//dev_info(&stml0xx_misc_data->spi->dev,
+				//	"Headset button 2 pressed");
 				Headset_State = SH_HEADSET_BUTTON_2;
 				input_report_key(ps_stml0xx->input_dev,
 					stml0xx_misc_data->pdata->headset_button_2_keycode,
 					1);
 				input_sync(ps_stml0xx->input_dev);
 			} else if (new_state & SH_HEADSET_BUTTON_3_DOWN) {
-				dev_info(&stml0xx_misc_data->spi->dev,
-					"Headset button 3 pressed");
+				//dev_info(&stml0xx_misc_data->spi->dev,
+				//	"Headset button 3 pressed");
 				Headset_State = SH_HEADSET_BUTTON_3;
 				input_report_key(ps_stml0xx->input_dev,
 					stml0xx_misc_data->pdata->headset_button_3_keycode,
 					1);
 				input_sync(ps_stml0xx->input_dev);
 			} else if (new_state & SH_HEADSET_BUTTON_4_DOWN) {
-				dev_info(&stml0xx_misc_data->spi->dev,
-					"Headset button 4 pressed");
+				//dev_info(&stml0xx_misc_data->spi->dev,
+				//	"Headset button 4 pressed");
 				Headset_State = SH_HEADSET_BUTTON_4;
 				input_report_key(ps_stml0xx->input_dev,
 					stml0xx_misc_data->pdata->headset_button_4_keycode,
@@ -361,16 +361,16 @@ void stml0xx_irq_wake_work_func(struct work_struct *work)
 			0,
 			stm_ws->ts_ns);
 
-		dev_info(&stml0xx_misc_data->spi->dev,
-			"Sending Stowed status %d als %d prox %d raw_prox %d noise_floor %d recal_thresh %d low_thresh %d high_thresh %d\n",
-			buf[WAKE_IRQ_IDX_STOWED],
-			SH_TO_UH16(buf + WAKE_IRQ_IDX_PROX_ALS),
-			buf[WAKE_IRQ_IDX_PROX],
-			SH_TO_UH16(buf + WAKE_IRQ_IDX_PROX_RAW),
-			SH_TO_UH16(buf + WAKE_IRQ_IDX_PROX_NOISE),
-			SH_TO_UH16(buf + WAKE_IRQ_IDX_PROX_RECAL),
-			SH_TO_UH16(buf + WAKE_IRQ_IDX_PROX_LTHRESH),
-			SH_TO_UH16(buf + WAKE_IRQ_IDX_PROX_HTHRESH));
+		//dev_info(&stml0xx_misc_data->spi->dev,
+		//	"Sending Stowed status %d als %d prox %d raw_prox %d noise_floor %d recal_thresh %d low_thresh %d high_thresh %d\n",
+		//	buf[WAKE_IRQ_IDX_STOWED],
+		//	SH_TO_UH16(buf + WAKE_IRQ_IDX_PROX_ALS),
+		//	buf[WAKE_IRQ_IDX_PROX],
+		//	SH_TO_UH16(buf + WAKE_IRQ_IDX_PROX_RAW),
+		//	SH_TO_UH16(buf + WAKE_IRQ_IDX_PROX_NOISE),
+		//	SH_TO_UH16(buf + WAKE_IRQ_IDX_PROX_RECAL),
+		//	SH_TO_UH16(buf + WAKE_IRQ_IDX_PROX_LTHRESH),
+		//	SH_TO_UH16(buf + WAKE_IRQ_IDX_PROX_HTHRESH));
 	}
 	if (irq_status & M_CAMERA_GESTURE) {
 		stml0xx_as_data_buffer_write(ps_stml0xx, DT_CAMERA_ACT,
@@ -494,11 +494,11 @@ void stml0xx_irq_wake_work_func(struct work_struct *work)
 		stml0xx_ms_data_buffer_write(ps_stml0xx, DT_ALGO_EVT,
 				&buf[WAKE_IRQ_IDX_MODALITY_STOWED],
 				8);
-		dev_info(&stml0xx_misc_data->spi->dev,
-			"Sending algo stowed event %d, als %d, prox %d",
-			buf[WAKE_IRQ_IDX_MODALITY_STOWED + 3],
-			SH_TO_UH16(buf + WAKE_IRQ_IDX_PROX_ALS),
-			buf[WAKE_IRQ_IDX_PROX]);
+		//dev_info(&stml0xx_misc_data->spi->dev,
+		//	"Sending algo stowed event %d, als %d, prox %d",
+		//	buf[WAKE_IRQ_IDX_MODALITY_STOWED + 3],
+		//	SH_TO_UH16(buf + WAKE_IRQ_IDX_PROX_ALS),
+		//	buf[WAKE_IRQ_IDX_PROX]);
 	}
 	if (irq2_status & M_ALGO_ACCUM_MODALITY) {
 		buf[WAKE_IRQ_IDX_MODALITY_ACCUM + ALGO_TYPE] =
@@ -522,8 +522,8 @@ void stml0xx_irq_wake_work_func(struct work_struct *work)
 	if (irq_status & M_LOG_MSG) {
 		memcpy(stat_string, &buf[WAKE_IRQ_IDX_LOG_MSG], LOG_MSG_SIZE);
 		stat_string[LOG_MSG_SIZE] = 0;
-		dev_info(&stml0xx_misc_data->spi->dev,
-			"sensorhub : %s", stat_string);
+		//dev_info(&stml0xx_misc_data->spi->dev,
+		//	"sensorhub : %s", stat_string);
 	}
 	if (irq_status & M_INIT_COMPLETE) {
 		/* set the init complete register, */
@@ -533,8 +533,8 @@ void stml0xx_irq_wake_work_func(struct work_struct *work)
 
 		queue_work(ps_stml0xx->irq_work_queue,
 			&ps_stml0xx->initialize_work);
-		dev_info(&stml0xx_misc_data->spi->dev,
-			"Sensor Hub reports reset");
+		//dev_info(&stml0xx_misc_data->spi->dev,
+		//	"Sensor Hub reports reset");
 		stml0xx_g_booted = 1;
 #ifdef CONFIG_SENSORS_SH_AK09912
 		if (akm_init == false) {
