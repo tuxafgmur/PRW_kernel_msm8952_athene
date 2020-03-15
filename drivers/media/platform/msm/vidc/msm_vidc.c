@@ -414,11 +414,6 @@ static struct msm_smem *map_buffer(struct msm_vidc_inst *inst,
 	}
 	if (msm_comm_smem_cache_operations(inst, handle,
 			SMEM_CACHE_CLEAN))
-		dprintk(VIDC_WARN,
-			"CACHE Clean failed: %d, %d, %d\n",
-				p->reserved[0],
-				p->reserved[1],
-				p->length);
 	return handle;
 }
 
@@ -799,11 +794,6 @@ int msm_vidc_release_buffers(void *instance, int buffer_type)
 
 	if (!inst->in_reconfig) {
 		rc = msm_comm_try_state(inst, MSM_VIDC_RELEASE_RESOURCES_DONE);
-		if (rc) {
-			dprintk(VIDC_ERR,
-					"Failed to move inst: %pK to release res done\n",
-					inst);
-		}
 	}
 
 	/*
