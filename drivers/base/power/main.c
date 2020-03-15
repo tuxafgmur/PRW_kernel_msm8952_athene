@@ -186,9 +186,9 @@ static ktime_t initcall_debug_start(struct device *dev)
 	ktime_t calltime = ktime_set(0, 0);
 
 	if (pm_print_times_enabled) {
-		pr_info("calling  %s+ @ %i, parent: %s\n",
-			dev_name(dev), task_pid_nr(current),
-			dev->parent ? dev_name(dev->parent) : "none");
+		//pr_info("calling  %s+ @ %i, parent: %s\n",
+		//	dev_name(dev), task_pid_nr(current),
+		//	dev->parent ? dev_name(dev->parent) : "none");
 		calltime = ktime_get();
 	}
 
@@ -198,14 +198,14 @@ static ktime_t initcall_debug_start(struct device *dev)
 static void initcall_debug_report(struct device *dev, ktime_t calltime,
 				  int error)
 {
-	ktime_t delta, rettime;
+	//ktime_t delta, rettime;
 
-	if (pm_print_times_enabled) {
-		rettime = ktime_get();
-		delta = ktime_sub(rettime, calltime);
-		pr_info("call %s+ returned %d after %Ld usecs\n", dev_name(dev),
-			error, (unsigned long long)ktime_to_ns(delta) >> 10);
-	}
+	//if (pm_print_times_enabled) {
+	//	rettime = ktime_get();
+	//	delta = ktime_sub(rettime, calltime);
+		//pr_info("call %s+ returned %d after %Ld usecs\n", dev_name(dev),
+		//	error, (unsigned long long)ktime_to_ns(delta) >> 10);
+	//}
 }
 
 /**
@@ -373,19 +373,19 @@ static void pm_dev_err(struct device *dev, pm_message_t state, char *info,
 
 static void dpm_show_time(ktime_t starttime, pm_message_t state, char *info)
 {
-	ktime_t calltime;
-	u64 usecs64;
-	int usecs;
+	//ktime_t calltime;
+	//u64 usecs64;
+	//int usecs;
 
-	calltime = ktime_get();
-	usecs64 = ktime_to_ns(ktime_sub(calltime, starttime));
-	do_div(usecs64, NSEC_PER_USEC);
-	usecs = usecs64;
-	if (usecs == 0)
-		usecs = 1;
-	pr_info("PM: %s%s%s of devices complete after %ld.%03ld msecs\n",
-		info ?: "", info ? " " : "", pm_verb(state.event),
-		usecs / USEC_PER_MSEC, usecs % USEC_PER_MSEC);
+	//calltime = ktime_get();
+	//usecs64 = ktime_to_ns(ktime_sub(calltime, starttime));
+	//do_div(usecs64, NSEC_PER_USEC);
+	//usecs = usecs64;
+	//if (usecs == 0)
+	//	usecs = 1;
+	//pr_info("PM: %s%s%s of devices complete after %ld.%03ld msecs\n",
+	//	info ?: "", info ? " " : "", pm_verb(state.event),
+	//	usecs / USEC_PER_MSEC, usecs % USEC_PER_MSEC);
 }
 
 static int dpm_run_callback(pm_callback_t cb, struct device *dev,
