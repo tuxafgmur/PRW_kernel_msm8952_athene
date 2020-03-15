@@ -1476,10 +1476,10 @@ static int msm_venc_toggle_hier_p(struct msm_vidc_inst *inst, int layers)
 	rc = call_hfi_op(hdev, session_set_property,
 			(void *)inst->session, property_id,
 			(void *)&num_enh_layers);
-	if (rc) {
-		dprintk(VIDC_ERR,
-			"%s: failed with error = %d\n", __func__, rc);
-	}
+	//if (rc) {
+	//	dprintk(VIDC_ERR,
+	//		"%s: failed with error = %d\n", __func__, rc);
+	//}
 	return rc;
 }
 

@@ -1578,8 +1578,8 @@ static int cam_populate_smmu_context_banks(struct device *dev,
 		ctx = msm_iommu_get_ctx(cb->name);
 		if (IS_ERR_OR_NULL(ctx)) {
 			rc = PTR_ERR(ctx);
-			pr_err("Invalid pointer of ctx : %s rc = %d\n",
-				 cb->name, rc);
+			//pr_err("Invalid pointer of ctx : %s rc = %d\n",
+			//	 cb->name, rc);
 			return -EINVAL;
 		}
 		CDBG("getting QSMMU ctx : %s\n", cb->name);
@@ -1614,14 +1614,14 @@ static int cam_smmu_probe(struct platform_device *pdev)
 	if (of_device_is_compatible(dev->of_node, "qcom,msm-cam-smmu")) {
 		rc = cam_alloc_smmu_context_banks(dev);
 		if (rc < 0)	{
-			pr_err("Error: allocating context banks\n");
+			//pr_err("Error: allocating context banks\n");
 			return -ENOMEM;
 		}
 	}
 	if (of_device_is_compatible(dev->of_node, "qcom,msm-cam-smmu-cb")) {
 		rc = cam_populate_smmu_context_banks(dev, CAM_ARM_SMMU);
 		if (rc < 0) {
-			pr_err("Error: populating context banks\n");
+			//pr_err("Error: populating context banks\n");
 			return -ENOMEM;
 		}
 		return rc;
@@ -1629,7 +1629,7 @@ static int cam_smmu_probe(struct platform_device *pdev)
 	if (of_device_is_compatible(dev->of_node, "qcom,qsmmu-cam-cb")) {
 		rc = cam_populate_smmu_context_banks(dev, CAM_QSMMU);
 		if (rc < 0) {
-			pr_err("Error: populating context banks\n");
+			//pr_err("Error: populating context banks\n");
 			return -ENOMEM;
 		}
 		return rc;
@@ -1638,8 +1638,8 @@ static int cam_smmu_probe(struct platform_device *pdev)
 	/* probe thru all the subdevices */
 	rc = of_platform_populate(pdev->dev.of_node, msm_cam_smmu_dt_match,
 				NULL, &pdev->dev);
-	if (rc < 0)
-		pr_err("Error: populating devices\n");
+	//if (rc < 0)
+	//	pr_err("Error: populating devices\n");
 
 	INIT_WORK(&iommu_cb_set.smmu_work, cam_smmu_page_fault_work);
 	mutex_init(&iommu_cb_set.payload_list_lock);

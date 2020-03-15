@@ -29,15 +29,15 @@ static size_t get_u32_array_num_elements(struct platform_device *pdev,
 	int len;
 	size_t num_elements = 0;
 	if (!of_get_property(np, name, &len)) {
-		dprintk(VIDC_ERR, "Failed to read %s from device tree\n",
-			name);
+		//dprintk(VIDC_ERR, "Failed to read %s from device tree\n",
+		//	name);
 		goto fail_read;
 	}
 
 	num_elements = len / sizeof(u32);
 	if (num_elements <= 0) {
-		dprintk(VIDC_ERR, "%s not specified in device tree\n",
-			name);
+		//dprintk(VIDC_ERR, "%s not specified in device tree\n",
+		//	name);
 		goto fail_read;
 	}
 	return num_elements;
@@ -55,8 +55,8 @@ int read_hfi_type(struct platform_device *pdev)
 	if (np) {
 		rc = of_property_read_string(np, "qcom,hfi", &hfi_name);
 		if (rc) {
-			dprintk(VIDC_ERR,
-				"Failed to read hfi from device tree\n");
+			//dprintk(VIDC_ERR,
+			//	"Failed to read hfi from device tree\n");
 			goto err_hfi_read;
 		}
 		if (!strcmp(hfi_name, "venus"))
@@ -183,7 +183,7 @@ static int msm_vidc_load_reg_table(struct msm_vidc_platform_resources *res)
 
 	if (of_property_read_u32_array(pdev->dev.of_node, "qcom,reg-presets",
 		(u32 *)reg_set->reg_tbl, reg_set->count * 2)) {
-		dprintk(VIDC_ERR, "Failed to read register table\n");
+		//dprintk(VIDC_ERR, "Failed to read register table\n");
 		msm_vidc_free_reg_table(res);
 		return -EINVAL;
 	}
@@ -233,7 +233,7 @@ static int msm_vidc_load_qdss_table(struct msm_vidc_platform_resources *res)
 	rc = of_property_read_u32_array(pdev->dev.of_node, "qcom,qdss-presets",
 		(u32 *)qdss_addr_set->addr_tbl, qdss_addr_set->count * 2);
 	if (rc) {
-		dprintk(VIDC_ERR, "Failed to read qdss address table\n");
+		//dprintk(VIDC_ERR, "Failed to read qdss address table\n");
 		msm_vidc_free_qdss_addr_table(res);
 		rc = -EINVAL;
 		goto err_qdss_addr_tbl;
@@ -280,7 +280,7 @@ static int msm_vidc_load_freq_table(struct msm_vidc_platform_resources *res)
 	if (of_property_read_u32_array(pdev->dev.of_node,
 		"qcom,load-freq-tbl", (u32 *)res->load_freq_tbl,
 		num_elements * sizeof(*res->load_freq_tbl) / sizeof(u32))) {
-		dprintk(VIDC_ERR, "Failed to read frequency table\n");
+		//dprintk(VIDC_ERR, "Failed to read frequency table\n");
 		msm_vidc_free_freq_table(res);
 		return -EINVAL;
 	}
@@ -335,9 +335,9 @@ static int msm_vidc_load_bus_vectors(struct msm_vidc_platform_resources *res)
 		rc = of_property_read_u32(child_node, "qcom,bus-configs",
 				&configs);
 		if (rc) {
-			dprintk(VIDC_ERR,
-					"Failed to read qcom,bus-configs in %s: %d\n",
-					child_node->name, rc);
+			//dprintk(VIDC_ERR,
+			//		"Failed to read qcom,bus-configs in %s: %d\n",
+			//		child_node->name, rc);
 			break;
 		}
 		if (low_power)
@@ -626,7 +626,7 @@ static int msm_vidc_load_clock_table(
 				"qcom,clock-configs", clock_props,
 				num_clocks);
 	if (rc) {
-		dprintk(VIDC_ERR, "Failed to read clock properties: %d\n", rc);
+		//dprintk(VIDC_ERR, "Failed to read clock properties: %d\n", rc);
 		goto err_load_clk_prop_fail;
 	}
 
@@ -726,7 +726,7 @@ static int msm_vidc_load_clock_voltage_table(
 				"qcom,clock-voltage-tbl", cv_table,
 				num_elements);
 	if (rc) {
-		dprintk(VIDC_ERR, "Failed to read clock properties: %d\n", rc);
+		//dprintk(VIDC_ERR, "Failed to read clock properties: %d\n", rc);
 		goto err_load_clk_vltg_table_fail;
 	}
 	cv_info->cv_table = (struct clock_voltage_table *)cv_table;
@@ -767,9 +767,9 @@ static int msm_vidc_load_clock_voltage_table(
 				"qcom,vp9d-clock-voltage-tbl", cv_table,
 				num_elements);
 	if (rc) {
-		dprintk(VIDC_ERR,
-			"Failed to read vp9 clock properties: %d\n",
-			rc);
+		//dprintk(VIDC_ERR,
+		//	"Failed to read vp9 clock properties: %d\n",
+		//	rc);
 		goto err_load_clk_vltg_table_fail;
 	}
 	cv_info_vp9d->cv_table = (struct clock_voltage_table *)cv_table;
@@ -837,7 +837,7 @@ int read_platform_resources_from_dt(
 	rc = of_property_read_string(pdev->dev.of_node, "qcom,firmware-name",
 			&res->fw_name);
 	if (rc) {
-		dprintk(VIDC_ERR, "Failed to read firmware name: %d\n", rc);
+		//dprintk(VIDC_ERR, "Failed to read firmware name: %d\n", rc);
 		goto err_load_freq_table;
 	}
 	dprintk(VIDC_DBG, "Firmware filename: %s\n", res->fw_name);
