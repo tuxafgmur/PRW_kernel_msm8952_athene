@@ -219,10 +219,10 @@ int sidtab_context_to_sid(struct sidtab *s,
 			goto unlock_out;
 		}
 		sid = s->next_sid++;
-		if (context->len)
-			printk(KERN_INFO
-		       "SELinux:  Context %s is not valid (left unmapped).\n",
-			       context->str);
+		//if (context->len)
+		//	printk(KERN_INFO
+		//       "SELinux:  Context %s is not valid (left unmapped).\n",
+		//	       context->str);
 		ret = sidtab_insert(s, sid, context);
 		if (ret)
 			s->next_sid--;

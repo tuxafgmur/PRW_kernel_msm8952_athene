@@ -143,9 +143,9 @@ static int selinux_set_mapping(struct policydb *pol,
 
 		p_out->value = string_to_security_class(pol, p_in->name);
 		if (!p_out->value) {
-			printk(KERN_INFO
-			       "SELinux:  Class %s not defined in policy.\n",
-			       p_in->name);
+			//printk(KERN_INFO
+			//       "SELinux:  Class %s not defined in policy.\n",
+			//       p_in->name);
 			if (pol->reject_unknown)
 				goto err;
 			p_out->num_perms = 0;
@@ -163,9 +163,9 @@ static int selinux_set_mapping(struct policydb *pol,
 			p_out->perms[k] = string_to_av_perm(pol, p_out->value,
 							    p_in->perms[k]);
 			if (!p_out->perms[k]) {
-				printk(KERN_INFO
-				       "SELinux:  Permission %s in class %s not defined in policy.\n",
-				       p_in->perms[k], p_in->name);
+				//printk(KERN_INFO
+				//       "SELinux:  Permission %s in class %s not defined in policy.\n",
+				//       p_in->perms[k], p_in->name);
 				if (pol->reject_unknown)
 					goto err;
 				print_unknown_handle = true;
@@ -176,9 +176,9 @@ static int selinux_set_mapping(struct policydb *pol,
 		p_out->num_perms = k;
 	}
 
-	if (print_unknown_handle)
-		printk(KERN_INFO "SELinux: the above unknown classes and permissions will be %s\n",
-		       pol->allow_unknown ? "allowed" : "denied");
+	//if (print_unknown_handle)
+	//	printk(KERN_INFO "SELinux: the above unknown classes and permissions will be %s\n",
+	//	       pol->allow_unknown ? "allowed" : "denied");
 
 	*out_map_p = out_map;
 	*out_map_size = i;
