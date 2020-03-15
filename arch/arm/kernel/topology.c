@@ -192,8 +192,8 @@ void update_cpu_power(unsigned int cpu)
 
 	set_power_scale(cpu, cpu_capacity(cpu) / middle_capacity);
 
-	printk(KERN_INFO "CPU%u: update cpu_power %lu\n",
-		cpu, arch_scale_freq_power(NULL, cpu));
+	//printk(KERN_INFO "CPU%u: update cpu_power %lu\n",
+	//	cpu, arch_scale_freq_power(NULL, cpu));
 }
 
 #else
@@ -287,10 +287,10 @@ void store_cpu_topology(unsigned int cpuid)
 
 	update_cpu_power(cpuid);
 
-	printk(KERN_INFO "CPU%u: thread %d, cpu %d, socket %d, mpidr %x\n",
-		cpuid, cpu_topology[cpuid].thread_id,
-		cpu_topology[cpuid].core_id,
-		cpu_topology[cpuid].socket_id, mpidr);
+	//printk(KERN_INFO "CPU%u: thread %d, cpu %d, socket %d, mpidr %x\n",
+	//	cpuid, cpu_topology[cpuid].thread_id,
+	//	cpu_topology[cpuid].core_id,
+	//	cpu_topology[cpuid].socket_id, mpidr);
 }
 
 /*
