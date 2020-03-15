@@ -5080,8 +5080,8 @@ static void synaptics_rmi4_f54_sensor_mapping(void)
 
 	dev_info(&rmi4_data->i2c_client->dev,
 				"RxTx mapped from F$%s\n" \
-				"\n\tRx mapped count %d(%d)\n\tTx \
-				mapped count %d(%d)\n\n",
+				"\tRx mapped count %d(%d)\n\tTx \
+				mapped count %d(%d)\n",
 				f54->fn55 ? "55" : "54",
 				rmi4_data->num_of_rx,
 				rx_len,

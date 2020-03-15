@@ -2929,9 +2929,9 @@ static void synaptics_dsx_sensor_state(struct synaptics_rmi4_data *rmi4_data,
 		break;
 	}
 
-	pr_info("state change %s -> %s\n",
-			synaptics_dsx_state_name(rmi4_data->state),
-			synaptics_dsx_state_name(state));
+	//pr_info("state change %s -> %s\n",
+	//		synaptics_dsx_state_name(rmi4_data->state),
+	//		synaptics_dsx_state_name(state));
 
 	synaptics_dsx_set_state_safe(rmi4_data, state);
 }
@@ -3355,7 +3355,7 @@ static ssize_t synaptics_rmi4_stats_store(struct device *dev,
 		struct synaptics_rmi4_data *rmi4_data =
 				i2c_get_clientdata(to_i2c_client(dev));
 		statistics_reset();
-		pr_info("statistics reset\n");
+		//pr_info("statistics reset\n");
 		statistics_start_timekeeping(rmi4_data);
 	}
 	return count;
@@ -5533,8 +5533,7 @@ static int synaptics_rmi4_cap_button_map(
 
 	if (!pdata->cap_button_map) {
 		dev_err(&rmi4_data->i2c_client->dev,
-				"%s: cap_button_map is \
-				NULL in board file\n",
+				"%s: cap_button_map is NULL in board file\n",
 				__func__);
 		return -ENODEV;
 	} else if (!pdata->cap_button_map->map) {
@@ -5974,9 +5973,9 @@ static int synaptics_rmi4_query_device(struct synaptics_rmi4_data *rmi4_data)
 					/* not critical, just continue */
 					kfree(fhandler);
 					fhandler = NULL;
-					dev_err(&rmi4_data->i2c_client->dev,
-						"%s: No handler for F%x\n",
-						__func__, rmi_fd.fn_number);
+					//dev_err(&rmi4_data->i2c_client->dev,
+					//	"%s: No handler for F%x\n",
+					//	__func__, rmi_fd.fn_number);
 				}
 				break;
 
@@ -6588,21 +6587,21 @@ static void synaptics_rmi4_detection_work(struct work_struct *work)
 			error = synaptics_rmi4_scan_f54_ctrl_reg_info(regs);
 			if (error) {
 				regs->nr_regs = 0;
-				pr_err("F54_Ctrl scan failed\n");
+				//pr_err("F54_Ctrl scan failed\n");
 			}
 
 			regs = find_function(SYNAPTICS_RMI4_F54 | COMMAND_TYPE);
 			error = synaptics_rmi4_scan_f54_cmd_reg_info(regs);
 			if (error) {
 				regs->nr_regs = 0;
-				pr_err("F54_Cmd scan failed\n");
+				//pr_err("F54_Cmd scan failed\n");
 			}
 
 			regs = find_function(SYNAPTICS_RMI4_F54 | DATA_TYPE);
 			error = synaptics_rmi4_scan_f54_data_reg_info(regs);
 			if (error) {
 				regs->nr_regs = 0;
-				pr_err("F54_Data scan failed\n");
+				//pr_err("F54_Data scan failed\n");
 				scan_failures++;
 			}
 
@@ -6610,7 +6609,7 @@ static void synaptics_rmi4_detection_work(struct work_struct *work)
 			error = synaptics_rmi4_scan_f54_query_reg_info(regs);
 			if (error) {
 				regs->nr_regs = 0;
-				pr_err("F54_Query scan failed\n");
+				//pr_err("F54_Query scan failed\n");
 				scan_failures++;
 			}
 
@@ -7159,9 +7158,9 @@ static int synaptics_rmi4_probe(struct i2c_client *client,
 			retval = PTR_ERR(rmi4_data->regulator);
 			goto err_regulator_defer;
 		}
-		dev_warn(&client->dev,
-				"%s: Failed to get regulator\n",
-				__func__);
+		//dev_warn(&client->dev,
+		//		"%s: Failed to get regulator\n",
+		//		__func__);
 	} else {
 		int error = regulator_enable(rmi4_data->regulator);
 		if (error) {
