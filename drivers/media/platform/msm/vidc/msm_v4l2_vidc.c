@@ -77,9 +77,15 @@ static int msm_v4l2_close(struct file *filp)
 	vidc_inst = get_vidc_inst(filp, NULL);
 	rc = msm_vidc_release_buffers(vidc_inst,
 			V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE);
+	if (rc)
+		dprintk(VIDC_WARN,
+			"Failed in %s for release output buffers\n", __func__);
 
 	rc = msm_vidc_free_buffers(vidc_inst,
 			V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE);
+	if (rc)
+		dprintk(VIDC_WARN,
+			"%s: Failed to free output buffers\n", __func__);
 
 	rc = msm_vidc_close(vidc_inst);
 	trace_msm_v4l2_vidc_close_end("msm_v4l2_close end");

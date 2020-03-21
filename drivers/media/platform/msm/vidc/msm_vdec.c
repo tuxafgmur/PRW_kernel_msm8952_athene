@@ -1824,8 +1824,8 @@ static inline int start_streaming(struct msm_vidc_inst *inst)
 
 	rc = msm_comm_try_state(inst, MSM_VIDC_START_DONE);
 	if (rc) {
-		//dprintk(VIDC_ERR,
-		//	"Failed to move inst: %pK to start done state\n", inst);
+		dprintk(VIDC_ERR,
+			"Failed to move inst: %pK to start done state\n", inst);
 		goto fail_start;
 	}
 	msm_dcvs_init_load(inst);
@@ -1860,9 +1860,9 @@ static inline int stop_streaming(struct msm_vidc_inst *inst)
 {
 	int rc = 0;
 	rc = msm_comm_try_state(inst, MSM_VIDC_RELEASE_RESOURCES_DONE);
-	//if (rc)
-	//	dprintk(VIDC_ERR,
-	//		"Failed to move inst: %pK to start done state\n", inst);
+	if (rc)
+		dprintk(VIDC_ERR,
+			"Failed to move inst: %pK to start done state\n", inst);
 	return rc;
 }
 
@@ -1928,10 +1928,10 @@ static int msm_vdec_stop_streaming(struct vb2_queue *q)
 
 	msm_comm_scale_clocks_and_bus(inst);
 
-	//if (rc)
-	//	dprintk(VIDC_ERR,
-	//		"Failed to move inst: %pK, cap = %d to state: %d\n",
-	//		inst, q->type, MSM_VIDC_RELEASE_RESOURCES_DONE);
+	if (rc)
+		dprintk(VIDC_ERR,
+			"Failed to move inst: %pK, cap = %d to state: %d\n",
+			inst, q->type, MSM_VIDC_RELEASE_RESOURCES_DONE);
 	return rc;
 }
 
@@ -2601,8 +2601,8 @@ static int msm_vdec_op_s_ctrl(struct v4l2_ctrl *ctrl)
 	}
 	rc = msm_comm_try_state(inst, MSM_VIDC_OPEN_DONE);
 	if (rc) {
-		//dprintk(VIDC_ERR,
-		//	"Failed to move inst: %pK to start done state\n", inst);
+		dprintk(VIDC_ERR,
+			"Failed to move inst: %pK to start done state\n", inst);
 		goto failed_open_done;
 	}
 
@@ -2633,8 +2633,8 @@ static int msm_vdec_op_g_volatile_ctrl(struct v4l2_ctrl *ctrl)
 
 	rc = msm_comm_try_state(inst, MSM_VIDC_OPEN_DONE);
 	if (rc) {
-		//dprintk(VIDC_ERR,
-		//	"Failed to move inst: %pK to start done state\n", inst);
+		dprintk(VIDC_ERR,
+			"Failed to move inst: %pK to start done state\n", inst);
 		goto failed_open_done;
 	}
 	for (c = 0; c < master->ncontrols; ++c) {

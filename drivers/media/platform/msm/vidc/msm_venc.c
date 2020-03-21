@@ -1568,6 +1568,8 @@ static inline int start_streaming(struct msm_vidc_inst *inst)
 
 	rc = msm_comm_try_state(inst, MSM_VIDC_START_DONE);
 	if (rc) {
+		dprintk(VIDC_ERR,
+			"Failed to move inst: %pK to start done state\n", inst);
 		goto fail_start;
 	}
 	msm_dcvs_init_load(inst);
@@ -1971,6 +1973,7 @@ static inline int venc_v4l2_to_hal(int id, int value)
 	}
 
 unknown_value:
+	dprintk(VIDC_WARN, "Unknown control (%x, %d)\n", id, value);
 	return -EINVAL;
 }
 
@@ -2178,7 +2181,7 @@ static int try_set_ctrl(struct msm_vidc_inst *inst, struct v4l2_ctrl *ctrl)
 			rc = -EINVAL;
 			break;
 		} else if (ctrl->val < avg_bitrate->val * 2) {
-			dprintk(VIDC_DBG,
+			dprintk(VIDC_WARN,
 				"Peak bitrate (%d) ideally should be twice the average bitrate (%d)\n",
 				ctrl->val, avg_bitrate->val);
 		}
@@ -2510,6 +2513,9 @@ static int try_set_ctrl(struct msm_vidc_inst *inst, struct v4l2_ctrl *ctrl)
 			property_id = HAL_PARAM_VENC_SLICE_DELIVERY_MODE;
 			enable.enable = true;
 		} else {
+			dprintk(VIDC_WARN,
+				"Failed : slice delivery mode is valid "\
+				"only for H264 encoder and MB based slicing\n");
 			enable.enable = false;
 		}
 		pdata = &enable;
@@ -2878,6 +2884,8 @@ static int try_set_ctrl(struct msm_vidc_inst *inst, struct v4l2_ctrl *ctrl)
 			inst->flags |= VIDC_REALTIME;
 			break;
 		default:
+			dprintk(VIDC_WARN,
+				"invalid ctrl value 0x%x\n", ctrl->val);
 			break;
 		}
 		break;
@@ -3412,6 +3420,11 @@ int msm_venc_s_parm(struct msm_vidc_inst *inst, struct v4l2_streamparm *a)
 		rc = call_hfi_op(hdev, session_set_property,
 				(void *)inst->session, property_id, pdata);
 
+		if (rc) {
+			dprintk(VIDC_WARN,
+				"Failed to set frame rate %d\n", rc);
+		}
+
 		msm_comm_scale_clocks_and_bus(inst);
 	}
 exit:
@@ -3637,6 +3650,8 @@ int msm_venc_g_fmt(struct msm_vidc_inst *inst, struct v4l2_format *f)
 
 	rc = msm_comm_try_get_bufreqs(inst);
 	if (rc) {
+		dprintk(VIDC_WARN, "Getting buffer requirements failed: %d\n",
+				rc);
 		return rc;
 	}
 
@@ -4028,6 +4043,8 @@ int msm_venc_ctrl_init(struct msm_vidc_inst *inst)
 	/* Construct a super cluster of all controls */
 	inst->cluster = get_super_cluster(inst, &cluster_size);
 	if (!inst->cluster || !cluster_size) {
+		dprintk(VIDC_WARN,
+				"Failed to setup super cluster\n");
 		return -EINVAL;
 	}
 
